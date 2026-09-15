@@ -1,6 +1,6 @@
 # Website for 16.S893
 
-A personal site built with plain HTML, CSS, and JavaScript.
+This is my website for 16.S893.
 
 ## Structure
 
