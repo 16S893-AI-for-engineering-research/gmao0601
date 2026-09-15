@@ -1,0 +1,511 @@
+/* ---- Reset-ish basics ---- */
+:root {
+  --wave-1: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20120%2060%27%3E%3Cpath%20d%3D%27M0%2C25%20C20%2C10%2040%2C10%2060%2C25%20C80%2C40%20100%2C40%20120%2C25%20L120%2C60%20L0%2C60%20Z%27%20fill%3D%27%23dff4ff%27/%3E%3C/svg%3E");
+  --wave-2: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20120%2060%27%3E%3Cpath%20d%3D%27M0%2C25%20C20%2C10%2040%2C10%2060%2C25%20C80%2C40%20100%2C40%20120%2C25%20L120%2C60%20L0%2C60%20Z%27%20fill%3D%27%23bfe7fb%27/%3E%3C/svg%3E");
+  --wave-3: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20120%2060%27%3E%3Cpath%20d%3D%27M0%2C25%20C20%2C10%2040%2C10%2060%2C25%20C80%2C40%20100%2C40%20120%2C25%20L120%2C60%20L0%2C60%20Z%27%20fill%3D%27%239ed9f5%27/%3E%3C/svg%3E");
+  --wave-4: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20120%2060%27%3E%3Cpath%20d%3D%27M0%2C25%20C20%2C10%2040%2C10%2060%2C25%20C80%2C40%20100%2C40%20120%2C25%20L120%2C60%20L0%2C60%20Z%27%20fill%3D%27%236cc3ea%27/%3E%3C/svg%3E");
+  --wave-5: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20120%2060%27%3E%3Cpath%20d%3D%27M0%2C25%20C20%2C10%2040%2C10%2060%2C25%20C80%2C40%20100%2C40%20120%2C25%20L120%2C60%20L0%2C60%20Z%27%20fill%3D%27%233aa5d6%27/%3E%3C/svg%3E");
+  --wave-6: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20120%2060%27%3E%3Cpath%20d%3D%27M0%2C25%20C20%2C10%2040%2C10%2060%2C25%20C80%2C40%20100%2C40%20120%2C25%20L120%2C60%20L0%2C60%20Z%27%20fill%3D%27%231c7cae%27/%3E%3C/svg%3E");
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  color: #1a1a1a;
+  background: #fafafa;
+  line-height: 1.6;
+}
+
+/* Pages with the light-blue background (body + footer only) */
+body.blue-page {
+  background: #72c4f7;
+}
+
+body.blue-page .site-footer {
+  background: #72c4f7;
+}
+
+/* ---- About page layout: bio + headshot, sailing photo below ---- */
+.about-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+
+.bio-text {
+  flex: 1 1 320px;
+  margin: 0;
+}
+
+.headshot {
+  flex: 0 0 200px;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 3px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.sailing-photo {
+  display: block;
+  margin: 2rem auto 0;
+  max-width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* ---- Project page: coming soon easter egg ---- */
+.coming-soon {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  cursor: default;
+  display: inline-block;
+}
+
+.hint-text {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  color: #888;
+  font-style: italic;
+}
+
+/* ---- Dev Log page: black background, green "hacker" font ---- */
+body.hacker-page {
+  background: #000000;
+  color: #33ff33;
+  font-family: "Courier New", Courier, monospace;
+}
+
+body.hacker-page main h1,
+body.hacker-page main h2 {
+  color: #33ff33;
+}
+
+body.hacker-page .subtitle {
+  color: #2ecc40;
+}
+
+body.hacker-page .log-entry {
+  border-left-color: #1f7a1f;
+}
+
+body.hacker-page .log-date {
+  color: #2ecc40;
+}
+
+body.hacker-page .site-footer {
+  background: #000000;
+  color: #33ff33;
+  border-top-color: #1f7a1f;
+}
+
+body.hacker-page a {
+  color: #33ff33;
+}
+
+body.hacker-page .site-header a {
+  color: #1a1a1a;
+}
+
+body.hacker-page .site-header .nav-brand {
+  color: #1a1a1a;
+}
+
+.question-mark {
+  position: fixed;
+  font-weight: 700;
+  color: #1a1a1a;
+  pointer-events: none;
+  z-index: 9999;
+  animation: pop-fade 1.2s ease-out forwards;
+}
+
+@keyframes pop-fade {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.5);
+  }
+  15% {
+    opacity: 1;
+    transform: translateY(-10px) scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-60px) scale(1);
+  }
+}
+
+a {
+  color: #1a1a1a;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+img {
+  max-width: 100%;
+}
+
+/* ---- Layout ---- */
+.site-header {
+  background: linear-gradient(180deg, #f2f2f2 0%, #d8d8d8 45%, #ececec 55%, #c4c4c4 100%);
+  border-bottom: 1px solid #b0b0b0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.nav {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+}
+
+.nav-brand {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  font-weight: 500;
+}
+
+.nav-links a.active {
+  border-bottom: 2px solid #1a1a1a;
+}
+
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+  min-height: 60vh;
+}
+
+.site-footer {
+  border-top: 1px solid #e0e0e0;
+  padding: 1.5rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #777;
+}
+
+/* ---- Typography ---- */
+h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+h2 {
+  font-size: 1.4rem;
+  margin-top: 2rem;
+}
+
+.subtitle {
+  color: #666;
+  margin-top: 0;
+  margin-bottom: 2rem;
+}
+
+/* ---- Home page ---- */
+.hero {
+  padding: 2rem 0 3rem;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+}
+
+.home-links {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.home-card {
+  flex: 1 1 240px;
+  display: block;
+  padding: 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #1a1a1a;
+  text-decoration: none;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.home-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+.home-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+}
+
+.home-card p {
+  margin: 0;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+/* ---- Home page: animated ocean scene ---- */
+.ocean-scene {
+  position: relative;
+  width: 100%;
+  height: 460px;
+  margin-top: 3rem;
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(180deg, #eaf9ff 0%, #dff4ff 100%);
+}
+
+.ocean-sky {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #eaf9ff 0%, #dff4ff 60%, #dff4ff 100%);
+}
+
+.wave-layer {
+  position: absolute;
+  left: -20%;
+  width: 140%;
+  height: 70px;
+  background-repeat: repeat-x;
+  background-size: 200px 70px;
+}
+
+.wave-layer-1 {
+  top: 40px;
+  background-image: var(--wave-1);
+  animation: wave-scroll-r 24s linear infinite;
+}
+
+.wave-layer-2 {
+  top: 100px;
+  background-image: var(--wave-2);
+  animation: wave-scroll-l 20s linear infinite;
+}
+
+.wave-layer-3 {
+  top: 160px;
+  background-image: var(--wave-3);
+  animation: wave-scroll-r 17s linear infinite;
+}
+
+.wave-layer-4 {
+  top: 220px;
+  background-image: var(--wave-4);
+  animation: wave-scroll-l 14s linear infinite;
+}
+
+.wave-layer-5 {
+  top: 280px;
+  background-image: var(--wave-5);
+  animation: wave-scroll-r 11s linear infinite;
+}
+
+.wave-layer-6 {
+  top: 340px;
+  height: 130px;
+  background-image: var(--wave-6);
+  animation: wave-scroll-l 8s linear infinite;
+}
+
+@keyframes wave-scroll-l {
+  from { background-position-x: 0; }
+  to   { background-position-x: -200px; }
+}
+
+@keyframes wave-scroll-r {
+  from { background-position-x: 0; }
+  to   { background-position-x: 200px; }
+}
+
+.boat-track {
+  position: absolute;
+  width: 100%;
+  height: 0;
+}
+
+.boat-track span.boat-bob {
+  position: absolute;
+  display: inline-block;
+  transform-origin: center;
+}
+
+/* Each boat sails left-to-right/right-to-left in time with the wave layer
+   beneath it, and bobs up/down to ride the crest. */
+.boat-track-1 { top: 20px; }
+.boat-track-1 .boat-bob {
+  font-size: 2.2rem;
+  animation: sail-r 24s linear infinite, boat-bob 2.4s ease-in-out infinite;
+}
+
+.boat-track-2 { top: 80px; }
+.boat-track-2 .boat-bob {
+  font-size: 1.9rem;
+  animation: sail-l 20s linear infinite, boat-bob 2s ease-in-out infinite;
+  animation-delay: -4s, 0.3s;
+}
+
+.boat-track-3 { top: 140px; }
+.boat-track-3 .boat-bob {
+  font-size: 2.6rem;
+  animation: sail-r 17s linear infinite, boat-bob 2.2s ease-in-out infinite;
+  animation-delay: -8s, 0.1s;
+}
+
+.boat-track-4 { top: 200px; }
+.boat-track-4 .boat-bob {
+  font-size: 2rem;
+  animation: sail-l 14s linear infinite, boat-bob 1.8s ease-in-out infinite;
+  animation-delay: -5s, 0.5s;
+}
+
+.boat-track-5 { top: 260px; }
+.boat-track-5 .boat-bob {
+  font-size: 2.8rem;
+  animation: sail-r 11s linear infinite, boat-bob 2.6s ease-in-out infinite;
+  animation-delay: -2s, 0.2s;
+}
+
+@keyframes sail-r {
+  from { left: -10%; transform: scaleX(-1); }
+  to   { left: 105%; transform: scaleX(-1); }
+}
+
+@keyframes sail-l {
+  from { left: 105%; transform: scaleX(1); }
+  to   { left: -10%; transform: scaleX(1); }
+}
+
+@keyframes boat-bob {
+  0%, 100% { margin-top: 0; }
+  50% { margin-top: -8px; }
+}
+
+/* ---- Projects ---- */
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.project-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.25rem;
+  background: #fff;
+}
+
+.project-card h3 {
+  margin-top: 0;
+}
+
+.project-card .tags {
+  font-size: 0.8rem;
+  color: #888;
+  margin-top: 0.5rem;
+}
+
+/* ---- Dev log ---- */
+.log-entry {
+  border-left: 3px solid #ddd;
+  padding-left: 1rem;
+  margin-bottom: 2rem;
+}
+
+.log-date {
+  font-size: 0.85rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.log-entry h2 {
+  margin-top: 0.25rem;
+}
+
+.log-toggle {
+  cursor: pointer;
+  user-select: none;
+}
+
+.log-toggle::before {
+  content: '▸';
+  display: inline-block;
+  margin-right: 0.4rem;
+  transition: transform 0.2s ease;
+}
+
+.log-toggle[aria-expanded="true"]::before {
+  transform: rotate(90deg);
+}
+
+.log-body {
+  overflow: hidden;
+  max-height: 1200px;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  opacity: 1;
+}
+
+.log-body.collapsed {
+  max-height: 0;
+  opacity: 0;
+  margin: 0;
+}
+
+/* ---- Easter egg: sailing ---- */
+.easter-egg {
+  text-decoration: underline dotted;
+  text-decoration-color: #999;
+  cursor: default;
+}
+
+.sailboat {
+  position: fixed;
+  bottom: 0;
+  left: -120px;
+  font-size: 3rem;
+  line-height: 1;
+  pointer-events: none;
+  z-index: 9999;
+  animation: sail-across 4s linear forwards;
+  transform: scaleX(-1); /* face rightwards while moving right */
+}
+
+@keyframes sail-across {
+  from {
+    left: -120px;
+  }
+  to {
+    left: 110vw;
+  }
+}
