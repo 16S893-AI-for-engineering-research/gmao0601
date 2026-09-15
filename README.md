@@ -1,6 +1,7 @@
 # Website for 16.S893
 
 This is my website for 16.S893.
+Link attached here: https://16s893-ai-for-engineering-research.github.io/gmao0601/index.html
 
 ## Structure
 
