@@ -39,50 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// Easter egg: hovering over "Coming soon..." on the Project page spawns
-// a bunch of question marks popping up across the screen.
-document.addEventListener('DOMContentLoaded', () => {
-  const comingSoon = document.getElementById('coming-soon');
-  if (!comingSoon) return;
-
-  let intervalId = null;
-
-  function spawnQuestionMark() {
-    const mark = document.createElement('div');
-    mark.className = 'question-mark';
-    mark.textContent = '?';
-
-    const left = Math.random() * 100; // vw
-    const top = Math.random() * 100; // vh
-    const size = 1.5 + Math.random() * 2.5; // rem
-    const hue = Math.floor(Math.random() * 360);
-
-    mark.style.left = `${left}vw`;
-    mark.style.top = `${top}vh`;
-    mark.style.fontSize = `${size}rem`;
-    mark.style.color = `hsl(${hue}, 70%, 45%)`;
-
-    document.body.appendChild(mark);
-
-    mark.addEventListener('animationend', () => {
-      mark.remove();
-    });
-  }
-
-  comingSoon.addEventListener('mouseenter', () => {
-    if (intervalId) return;
-    spawnQuestionMark();
-    intervalId = setInterval(spawnQuestionMark, 100);
-  });
-
-  comingSoon.addEventListener('mouseleave', () => {
-    if (intervalId) {
-      clearInterval(intervalId);
-      intervalId = null;
-    }
-  });
-});
-
 // Dev Log page: scramble/decode text on load, hacker-movie style.
 document.addEventListener('DOMContentLoaded', () => {
   const targets = document.querySelectorAll('[data-text]');

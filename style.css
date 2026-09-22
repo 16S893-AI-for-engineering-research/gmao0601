@@ -70,6 +70,22 @@ body.blue-page .site-footer {
   display: inline-block;
 }
 
+/* ---- Project page: proposal content ---- */
+.proposal-section {
+  max-width: 720px;
+  margin: 2rem 0;
+}
+
+.proposal-section h2 {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.proposal-section p {
+  margin: 0.75rem 0;
+  line-height: 1.6;
+}
+
 .hint-text {
   margin: 0.5rem 0 0;
   font-size: 0.85rem;

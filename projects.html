@@ -22,12 +22,50 @@
   <main>
     <h1>Project</h1>
 
-    <p id="coming-soon" class="coming-soon">Coming soon...</p>
+    <section class="proposal-section">
+      <h2>Background/Motivation/Lit Review</h2>
+      <p>
+        High temperature reentry and ballistic trajectories result in a plasma sheath around hypersonic vehicles, leading to communication blackouts that can last from seconds to several minutes. The blackout degrades communications, datalinks, GPS signals, and radar sensing. Consequently, in these minutes, the vehicle can travel hundreds of miles without updating or reassessing its telemetry data. Various mitigation methods, such as aerodynamic shaping, electrophilic injection, tetrahertz propagation, and magnetic windows, have been studied.
+      </p>
+      <p>
+        Recent technological developments have allowed magnetic systems to become smaller and lighter, making magnetic windows feasible as a non-invasive technology system that can help reduce blackout time. Since hypersonic flight tests are expensive and rare, computational modeling is the most realistic method of designing an informed system. However, open source computational fluid dynamics (CFD) tools that are capable of modeling high-speed compressible flows in conjunction with Maxwell&rsquo;s equations are rare. Existing tools, such as CFDWarp and COOLFluid, are licensed and inaccessible to non-collaborators. Open codes such as OpenFOAM may have some nascent capabilities, but documentation is often sparse and available at the will of developers.
+      </p>
+      <p>
+        Furthermore, research into the communication blackout problem often requires multitool workflows, combining chemistry tools with CFD and then moving into computational electromagnetics (CEM) tools to assess attenuation of the signal. This is costly and time consuming to export and reformat data for each tool for a single example case.
+      </p>
+    </section>
+
+    <section class="proposal-section">
+      <h2>Proposal</h2>
+      <p>
+        This research project aims to create an additional module that works with an open source computational fluid dynamics solver that is validated for hypersonic flow to couple the flow physics with electromagnetic behavior. Combining this tool with ray tracing tools would allow for a streamlined workflow that bypasses the multitool requirements for current research.
+      </p>
+    </section>
+
+    <section class="proposal-section">
+      <h2>Potential Impact</h2>
+      <p>
+        This allows for the extension into informed magnetic window designs, as well as impact on the flow behavior, without needing to run expensive wind tunnel or flight tests. This research would also improve turnaround speeds for a computationally time-consuming workflow.
+      </p>
+    </section>
+
+    <section class="proposal-section">
+      <h2>Methodology</h2>
+      <p>
+        This project will build on an existing open source solver (EILMER or SU2) with the necessary capabilities to accurately model hypersonic flow and thermochemistry. If necessary, AI agent will attempt to create a solver from scratch.
+      </p>
+    </section>
+
+    <section class="proposal-section">
+      <h2>Milestones and Evaluation Metrics</h2>
+      <p>
+        Milestones throughout the course will include an evaluation of different physics/diffusion models, whether the implementation needs to be implicit or if explicit is sufficient, followed by the implementation and validation against a canonical case, likely the Hartmann flow case.
+      </p>
+    </section>
   </main>
 
   <footer class="site-footer">
     &copy; 2026 Grace. Built with plain HTML &amp; CSS.
-    <p class="hint-text">(hover over &quot;Coming soon...&quot;!) 😊</p>
   </footer>
 
   <script src="script.js"></script>
