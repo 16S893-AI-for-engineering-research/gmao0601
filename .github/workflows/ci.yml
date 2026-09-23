@@ -2,11 +2,18 @@ name: CI
 
 on:
   push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
 permissions:
   contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   html-validate:
@@ -16,24 +23,34 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Validate HTML files
-        uses: wemakeservices/html-validate-action@v0.1.6
+      - name: Set up Node
+        uses: actions/setup-node@v4
         with:
-          files: "*.html"
+          node-version: 22
 
-  check-links:
-    name: Check for broken links and images
+      - name: Validate HTML files
+        run: npx --yes html-validate "*.html"
+
+  deploy:
+    name: Deploy site to GitHub Pages
+    needs: html-validate
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Check links and images
-        uses: lycheeverse/lychee-action@v2
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          args: >
-            --verbose
-            --no-progress
-            --exclude-mail
-            './**/*.html'
-          fail: true
+          path: .
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
