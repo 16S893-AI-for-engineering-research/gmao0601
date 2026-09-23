@@ -5,6 +5,8 @@ description: Generates a Python script that produces a clean, paper-ready figure
 
 # New Figure Plot
 
+> **Note:** Loading or reading this skill file — whether invoked implicitly, or explicitly via `/skill:new_figure_plot` — does not by itself indicate a desire to apply it immediately. Even when invoked with `/skill:`, do not immediately generate, overwrite, or run a plotting script; confirm the details (target data file, output location, axis labels, etc.) with the user first.
+
 Generate a Python script that produces a publication-ready line plot figure from a data file using Matplotlib. The skill outputs a standalone `.py` script (not just an inline plot) so it can be reviewed, reused, and re-run by the user.
 
 ## Supported Input Formats
