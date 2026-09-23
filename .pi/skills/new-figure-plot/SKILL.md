@@ -1,5 +1,5 @@
 ---
-name: new_figure_plot
+name: new-figure-plot
 description: Generates a Python script that produces a clean, paper-ready figure. Assists with plotting data from dat, csv, txt, xml or similar data files. Use when prompted to generate figures from existing data.
 ---
 
