@@ -6,7 +6,7 @@
   <title>Project | My Site</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="blue-page">
+<body class="blue-page proposal-page">
   <header class="site-header">
     <nav class="nav">
       <span class="nav-brand">16.S893/Grace</span>
@@ -20,47 +20,131 @@
   </header>
 
   <main>
-    <h1>Project</h1>
+    <button id="toc-toggle" class="toc-toggle" type="button" aria-expanded="false" aria-controls="toc-panel">&#9776; Contents</button>
 
-    <section class="proposal-section">
-      <h2>Background/Motivation/Lit Review</h2>
+    <nav id="toc-panel" class="toc-panel" aria-hidden="true">
+      <button id="toc-close" class="toc-close" type="button" aria-label="Close table of contents">&times;</button>
+      <p class="toc-title">On this page</p>
+      <ul>
+        <li>
+          <a href="#the-problem">The Problem</a>
+          <ul>
+            <li><a href="#magnetic-windows">Magnetic Windows</a></li>
+            <li><a href="#the-research-goal">The Research Goal</a></li>
+            <li><a href="#the-solver-hiccup">The Solver Hiccup</a></li>
+          </ul>
+        </li>
+        <li><a href="#proposal">Proposal</a></li>
+        <li><a href="#potential-impact">Potential Impact</a></li>
+        <li><a href="#methodology">Methodology</a></li>
+        <li><a href="#milestones">Milestones and Evaluation Metrics</a></li>
+        <li><a href="#references">References</a></li>
+      </ul>
+    </nav>
+    <div id="toc-backdrop" class="toc-backdrop"></div>
+
+    <h1>Computational Modeling of Hypersonic Flow and Electromagnetism</h1>
+    <p class="subtitle">Because just CFD wasn't enough...</p>
+
+    <section class="proposal-section background-section">
+      <h2 id="the-problem">The Problem</h2>
+
       <p>
         High temperature reentry and ballistic trajectories result in a plasma sheath around hypersonic vehicles, leading to communication blackouts that can last from seconds to several minutes. The blackout degrades communications, datalinks, GPS signals, and radar sensing. Consequently, in these minutes, the vehicle can travel hundreds of miles without updating or reassessing its telemetry data. Various mitigation methods, such as aerodynamic shaping, electrophilic injection, tetrahertz propagation, and magnetic windows, have been studied.
       </p>
-      <p>
-        Recent technological developments have allowed magnetic systems to become smaller and lighter, making magnetic windows feasible as a non-invasive technology system that can help reduce blackout time. Since hypersonic flight tests are expensive and rare, computational modeling is the most realistic method of designing an informed system. However, open source computational fluid dynamics (CFD) tools that are capable of modeling high-speed compressible flows in conjunction with Maxwell&rsquo;s equations are rare. Existing tools, such as CFDWarp and COOLFluid, are licensed and inaccessible to non-collaborators. Open codes such as OpenFOAM may have some nascent capabilities, but documentation is often sparse and available at the will of developers.
-      </p>
-      <p>
-        Furthermore, research into the communication blackout problem often requires multitool workflows, combining chemistry tools with CFD and then moving into computational electromagnetics (CEM) tools to assess attenuation of the signal. This is costly and time consuming to export and reformat data for each tool for a single example case.
-      </p>
+
+      <div class="background-subsection">
+        <h3 id="magnetic-windows">Magnetic Windows</h3>
+        <p>
+          Magnetic windows offer an opportunity to part the plasma flow and allow a momentary connection with satellites or data links. Modern developments have suggested that magnetic systems may be lighter and more feasible.
+        </p>
+        <figure class="magnetic-window-figure">
+          <img src="img/2026PosterPic2-cropped.png" alt="Diagram of a magnetic system creating a window through plasma around a hypersonic vehicle" />
+          <figcaption>Visualization of Magnetic Window Mechanics</figcaption>
+        </figure>
+      </div>
+
+      <div class="background-subsection big-question">
+        <h3 id="the-research-goal">The Research Goal</h3>
+        <p>Design an informed magnetic system.</p>
+      </div>
+
+      <div class="background-subsection">
+        <h3 id="the-solver-hiccup">The Solver Hiccup</h3>
+        <p>
+          Open source computational fluid dynamics (CFD) tools that are capable of modeling high-speed compressible flows in conjunction with Maxwell&rsquo;s equations are rare. Existing tools, such as CFDWarp and COOLFluid, are licensed and inaccessible to non-collaborators. Open codes such as OpenFOAM may have some nascent capabilities, but documentation is often sparse and available at the will of developers.
+        </p>
+        <p>
+          Furthermore, research into the communication blackout problem often requires multitool workflows, combining chemistry tools with CFD and then moving into computational electromagnetics (CEM) tools to assess attenuation of the signal. This is costly and time consuming to export and reformat data for each tool for a single example case.
+        </p>
+      </div>
     </section>
 
     <section class="proposal-section">
-      <h2>Proposal</h2>
+      <h2 id="proposal">Proposal</h2>
       <p>
         This research project aims to create an additional module that works with an open source computational fluid dynamics solver that is validated for hypersonic flow to couple the flow physics with electromagnetic behavior. Combining this tool with ray tracing tools would allow for a streamlined workflow that bypasses the multitool requirements for current research.
       </p>
     </section>
 
     <section class="proposal-section">
-      <h2>Potential Impact</h2>
+      <h2 id="potential-impact">Potential Impact</h2>
       <p>
         This allows for the extension into informed magnetic window designs, as well as impact on the flow behavior, without needing to run expensive wind tunnel or flight tests. This research would also improve turnaround speeds for a computationally time-consuming workflow.
       </p>
     </section>
 
     <section class="proposal-section">
-      <h2>Methodology</h2>
+      <h2 id="methodology">Methodology</h2>
       <p>
-        This project will build on an existing open source solver (EILMER or SU2) with the necessary capabilities to accurately model hypersonic flow and thermochemistry. If necessary, AI agent will attempt to create a solver from scratch.
+        This project will build on an existing solver (EILMER, SU2, US3D, etc) with the necessary capabilities to accurately model hypersonic flow and thermochemistry.
       </p>
     </section>
 
     <section class="proposal-section">
-      <h2>Milestones and Evaluation Metrics</h2>
-      <p>
-        Milestones throughout the course will include an evaluation of different physics/diffusion models, whether the implementation needs to be implicit or if explicit is sufficient, followed by the implementation and validation against a canonical case, likely the Hartmann flow case.
-      </p>
+      <h2 id="milestones">Milestones and Evaluation Metrics</h2>
+      <table class="milestones-table">
+        <thead>
+          <tr>
+            <th>Milestone</th>
+            <th>Target Date</th>
+            <th>Deliverable</th>
+            <th>Evaluation Metric</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Evaluate candidate physics/diffusion models</td>
+            <td class="wip-cell">TBD</td>
+            <td>Short comparison of candidate models against the target regime</td>
+            <td class="wip-cell">TBD</td>
+          </tr>
+          <tr>
+            <td>Decide implicit vs. explicit time integration</td>
+            <td class="wip-cell">TBD</td>
+            <td>Written justification and stability/cost estimate</td>
+            <td class="wip-cell">TBD</td>
+          </tr>
+          <tr>
+            <td>Implement EM coupling module</td>
+            <td class="wip-cell">TBD</td>
+            <td>Working module integrated with chosen solver</td>
+            <td class="wip-cell">TBD</td>
+          </tr>
+          <tr>
+            <td>Validate against Hartmann flow</td>
+            <td class="wip-cell">TBD</td>
+            <td>Velocity/field profiles vs. analytic solution</td>
+            <td class="wip-cell">TBD</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="wip-note">[work in progress &mdash; dates and metrics not yet finalized]</p>
+    </section>
+
+    <section class="proposal-section">
+      <h2 id="references">References</h2>
+      <p class="wip-note">[work in progress]</p>
     </section>
   </main>
 

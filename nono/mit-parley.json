@@ -1,0 +1,56 @@
+{
+  "$schema": "https://nono.sh/schema/profile.json",
+  "extends": "node-dev",
+  "meta": {
+    "name": "mit-parley",
+    "description": "Pi coding agent with the MIT Parley extension: project folder + Pi state, Parley reached only through nono's credential proxy"
+  },
+  "filesystem": {
+    "allow": [
+      "$HOME/.pi/agent"
+    ]
+  },
+  "environment": {
+    "deny_vars": [
+      "PARLEY_API_KEY",
+      "MIT_PARLEY_API_KEY"
+    ]
+  },
+  "network": {
+    "network_profile": null,
+    "allow_domain": [
+      "parley.api.mit.edu"
+    ],
+    "credentials": [
+      "parley"
+    ],
+    "custom_credentials": {
+      "parley": {
+        "upstream": "https://parley.api.mit.edu",
+        "credential_key": "env://PARLEY_API_KEY",
+        "env_var": "MY_MIT_PARLEY_API_KEY",
+        "inject_mode": "header",
+        "inject_header": "Authorization",
+        "credential_format": "Bearer {}",
+        "endpoint_rules": [
+          {
+            "method": "POST",
+            "path": "/v1/chat/completions"
+          },
+          {
+            "method": "POST",
+            "path": "/v1/responses"
+          }
+        ]
+      }
+    }
+  },
+  "workdir": {
+    "access": "readwrite"
+  },
+  "diagnostics": {
+    "suppress_system_services": [
+      "user-preference-read"
+    ]
+  }
+}

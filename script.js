@@ -87,6 +87,68 @@ document.addEventListener('DOMContentLoaded', () => {
   targets.forEach(scrambleElement);
 });
 
+// Projects page: collapsible table-of-contents sidebar.
+document.addEventListener('DOMContentLoaded', () => {
+  const toggle = document.getElementById('toc-toggle');
+  const panel = document.getElementById('toc-panel');
+  const closeBtn = document.getElementById('toc-close');
+  const backdrop = document.getElementById('toc-backdrop');
+  if (!toggle || !panel) return;
+
+  function openToc() {
+    panel.classList.add('open');
+    panel.setAttribute('aria-hidden', 'false');
+    toggle.setAttribute('aria-expanded', 'true');
+    if (backdrop) backdrop.classList.add('open');
+  }
+
+  function closeToc() {
+    panel.classList.remove('open');
+    panel.setAttribute('aria-hidden', 'true');
+    toggle.setAttribute('aria-expanded', 'false');
+    if (backdrop) backdrop.classList.remove('open');
+  }
+
+  toggle.addEventListener('click', () => {
+    if (panel.classList.contains('open')) {
+      closeToc();
+    } else {
+      openToc();
+    }
+  });
+
+  if (closeBtn) closeBtn.addEventListener('click', closeToc);
+  if (backdrop) backdrop.addEventListener('click', closeToc);
+
+  panel.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', closeToc);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeToc();
+  });
+});
+
+// Projects page: fade in each proposal section as it scrolls into view.
+document.addEventListener('DOMContentLoaded', () => {
+  const sections = document.querySelectorAll('.proposal-section');
+  if (!sections.length) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.2 }
+  );
+
+  sections.forEach((section) => observer.observe(section));
+});
+
 // Dev Log page: clicking an entry's title expands/collapses its body text.
 document.addEventListener('DOMContentLoaded', () => {
   const toggles = document.querySelectorAll('.log-toggle');

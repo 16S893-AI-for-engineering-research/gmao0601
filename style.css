@@ -1,5 +1,12 @@
 /* ---- Reset-ish basics ---- */
 :root {
+  /* Site-wide page background: the original saturated sky blue. */
+  --page-blue: #72c4f7;
+  /* Projects/proposal page only: a desaturated variant so long-form body
+     copy on the translucent cards stays high-contrast. */
+  --page-blue-muted: #a9cfe4;
+  --accent-blue: #1c7cae;
+  --accent-blue-dark: #145f86;
   --wave-1: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20120%2060%27%3E%3Cpath%20d%3D%27M0%2C25%20C20%2C10%2040%2C10%2060%2C25%20C80%2C40%20100%2C40%20120%2C25%20L120%2C60%20L0%2C60%20Z%27%20fill%3D%27%23dff4ff%27/%3E%3C/svg%3E");
   --wave-2: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20120%2060%27%3E%3Cpath%20d%3D%27M0%2C25%20C20%2C10%2040%2C10%2060%2C25%20C80%2C40%20100%2C40%20120%2C25%20L120%2C60%20L0%2C60%20Z%27%20fill%3D%27%23bfe7fb%27/%3E%3C/svg%3E");
   --wave-3: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20120%2060%27%3E%3Cpath%20d%3D%27M0%2C25%20C20%2C10%2040%2C10%2060%2C25%20C80%2C40%20100%2C40%20120%2C25%20L120%2C60%20L0%2C60%20Z%27%20fill%3D%27%239ed9f5%27/%3E%3C/svg%3E");
@@ -22,11 +29,20 @@ body {
 
 /* Pages with the light-blue background (body + footer only) */
 body.blue-page {
-  background: #72c4f7;
+  background: var(--page-blue);
 }
 
 body.blue-page .site-footer {
-  background: #72c4f7;
+  background: var(--page-blue);
+  color: #2b3a42;
+  border-top-color: rgba(0, 0, 0, 0.12);
+}
+
+/* Proposal page: desaturated background, scoped so index/about keep the
+   saturated blue. */
+body.blue-page.proposal-page,
+body.blue-page.proposal-page .site-footer {
+  background: var(--page-blue-muted);
 }
 
 /* ---- About page layout: bio + headshot, sailing photo below ---- */
@@ -70,14 +86,133 @@ body.blue-page .site-footer {
   display: inline-block;
 }
 
-/* ---- Project page: proposal content ---- */
+/* ---- Project page: table of contents sidebar (collapsible) ---- */
+.toc-toggle {
+  position: fixed;
+  top: 5rem;
+  left: 1rem;
+  z-index: 20;
+  font-family: inherit;
+  font-size: 0.9rem;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.85);
+  color: #1a1a1a;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.toc-toggle:hover {
+  background: #ffffff;
+}
+
+.toc-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 260px;
+  max-width: 80vw;
+  background: #ffffff;
+  border-right: 1px solid #e0e0e0;
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15);
+  padding: 3.5rem 1.5rem 1.5rem;
+  overflow-y: auto;
+  z-index: 30;
+  transform: translateX(-100%);
+  transition: transform 0.25s ease;
+}
+
+.toc-panel.open {
+  transform: translateX(0);
+}
+
+.toc-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  font-size: 1.4rem;
+  line-height: 1;
+  background: none;
+  border: none;
+  color: #555;
+  cursor: pointer;
+}
+
+.toc-title {
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #888;
+  margin: 0 0 0.75rem;
+}
+
+.toc-panel ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.toc-panel ul ul {
+  margin-top: 0.4rem;
+  margin-left: 0.9rem;
+  padding-left: 0.75rem;
+  border-left: 2px solid #eee;
+}
+
+.toc-panel li {
+  margin: 0.4rem 0;
+}
+
+.toc-panel a {
+  font-size: 0.92rem;
+  color: #1a1a1a;
+}
+
+.toc-panel ul ul a {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.toc-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 25;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.toc-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ---- Project page: proposal content, styled as separated sections ---- */
 .proposal-section {
   max-width: 720px;
-  margin: 2rem 0;
+  margin: 2.5rem 0;
+  padding: 1.75rem 2rem;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.proposal-section.in-view {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .proposal-section h2 {
   font-size: 1.4rem;
+  margin-top: 0;
   margin-bottom: 0.5rem;
 }
 
@@ -86,10 +221,92 @@ body.blue-page .site-footer {
   line-height: 1.6;
 }
 
+.background-subsection {
+  margin-top: 1.75rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid rgba(26, 26, 26, 0.15);
+}
+
+.background-subsection h3 {
+  margin: 0 0 0.65rem;
+  font-size: 1.15rem;
+}
+
+.magnetic-window-figure {
+  margin: 1.5rem 0 0;
+}
+
+.magnetic-window-figure img {
+  display: block;
+  width: 100%;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.magnetic-window-figure figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #555;
+  text-align: center;
+}
+
+.big-question {
+  padding: 1.5rem;
+  border: 0;
+  border-left: 4px solid var(--accent-blue);
+  border-radius: 0 8px 8px 0;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.big-question h3 {
+  color: var(--accent-blue-dark);
+}
+
+.big-question p {
+  margin-bottom: 0;
+  font-size: 1.15rem;
+  font-style: italic;
+}
+
 .hint-text {
   margin: 0.5rem 0 0;
   font-size: 0.85rem;
   color: #888;
+  font-style: italic;
+}
+
+.wip-note {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.milestones-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.92rem;
+}
+
+.milestones-table th,
+.milestones-table td {
+  border: 1px solid rgba(26, 26, 26, 0.15);
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.milestones-table th {
+  background: rgba(255, 255, 255, 0.5);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #555;
+}
+
+.milestones-table td.wip-cell {
+  color: #999;
   font-style: italic;
 }
 
@@ -242,6 +459,11 @@ h2 {
   color: #666;
   margin-top: 0;
   margin-bottom: 2rem;
+}
+
+body.proposal-page .subtitle {
+  color: #333;
+  font-style: italic;
 }
 
 /* ---- Home page ---- */
