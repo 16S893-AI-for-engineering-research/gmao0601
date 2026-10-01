@@ -6,7 +6,16 @@
   <title>Dev Log | My Site</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="hacker-page">
+<body class="hacker-page" data-gated="true">
+  <div id="password-gate" class="password-gate">
+    <form id="password-gate-form" class="password-gate-form">
+      <label for="password-gate-input">Clue: what class?</label>
+      <input type="password" id="password-gate-input" name="password" autocomplete="off" placeholder="Enter password" />
+      <button type="submit">Unlock</button>
+      <p id="password-gate-error" class="password-gate-error" hidden>Incorrect password, try again.</p>
+    </form>
+  </div>
+
   <header class="site-header">
     <nav class="nav">
       <span class="nav-brand">16.S893/Grace</span>
@@ -22,6 +31,22 @@
   <main>
     <h1 id="scramble-title" data-text="Dev Log">Dev Log</h1>
     <p class="subtitle" id="scramble-subtitle" data-text="Notes on progress, decisions, and things I'm learning along the way.">Notes on progress, decisions, and things I'm learning along the way.</p>
+
+    <div class="log-entry">
+      <p class="log-date">September 30, 2026</p>
+      <h2 class="log-toggle" tabindex="0" role="button" aria-expanded="true">Figure Recreation and some New Skills</h2>
+      <div class="log-body">
+        <p>
+          Tried starting out with GPT-Nano, before switching to Terra and Sonnet. Nano would be overly verbose about all the commands I gave it before repeating them back to me when the task was not super clearly specified (poor on my end too, but it was quite unforgiving unlike Terra or Sonnet).
+        </p>
+        <p>
+          Creating the skills was pretty easy. I used the SKILL.md template this time instead of trying to prompt it from scratch. That was a lot faster. Definitely need to go back and review the TDD skill more carefully, but for now the capabilities seem to match what I have been Googling and seeing thus far. For the recreation of the figure skill, I had it emulate WebPlotDigitizer capabilities.
+        </p>
+        <p>
+          I then had two independent agents write tests (first) and then recreate a figure from Richard Peterson's "Codesign of Plasma Avoidant and Plasma Embracive Antenna Topologies for Hypersonic Applications." It did a pretty good job in terms of the image looking very similar. It passed all the tests the other agent wrote. A step I should take to examine this more closely is to double check the tests and calculated values further, but that will take a bit to backtrack the math since some of these values were pulled from CFD simulations.
+        </p>
+      </div>
+    </div>
 
     <div class="log-entry">
       <p class="log-date">September 23, 2026</p>

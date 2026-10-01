@@ -1,3 +1,44 @@
+// Password gate: client-side only, deterrent rather than real security.
+// Protects projects.html and devlog.html. Unlocked state is remembered
+// for the browser tab via sessionStorage.
+(() => {
+  const GATE_PASSWORD = '16.S893';
+  const SESSION_KEY = 'siteGateUnlocked';
+
+  const body = document.body;
+  if (!body || body.dataset.gated !== 'true') return;
+
+  const gate = document.getElementById('password-gate');
+  const form = document.getElementById('password-gate-form');
+  const input = document.getElementById('password-gate-input');
+  const error = document.getElementById('password-gate-error');
+  if (!gate || !form || !input) return;
+
+  function unlock() {
+    gate.classList.add('unlocked');
+    document.body.classList.remove('gate-locked');
+    sessionStorage.setItem(SESSION_KEY, 'true');
+  }
+
+  if (sessionStorage.getItem(SESSION_KEY) === 'true') {
+    unlock();
+  } else {
+    document.body.classList.add('gate-locked');
+    input.focus();
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (input.value === GATE_PASSWORD) {
+      unlock();
+    } else {
+      if (error) error.hidden = false;
+      input.value = '';
+      input.focus();
+    }
+  });
+})();
+
 // Easter egg: hovering over "sailing" sends a sailboat sailing across the screen.
 document.addEventListener('DOMContentLoaded', () => {
   const trigger = document.getElementById('sail-trigger');

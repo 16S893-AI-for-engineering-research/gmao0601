@@ -6,7 +6,16 @@
   <title>Project | My Site</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="blue-page proposal-page">
+<body class="blue-page proposal-page" data-gated="true">
+  <div id="password-gate" class="password-gate">
+    <form id="password-gate-form" class="password-gate-form">
+      <label for="password-gate-input">Clue: what class?</label>
+      <input type="password" id="password-gate-input" name="password" autocomplete="off" placeholder="Enter password" />
+      <button type="submit">Unlock</button>
+      <p id="password-gate-error" class="password-gate-error" hidden>Incorrect password, try again.</p>
+    </form>
+  </div>
+
   <header class="site-header">
     <nav class="nav">
       <span class="nav-brand">16.S893/Grace</span>
