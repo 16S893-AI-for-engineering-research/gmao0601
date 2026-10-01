@@ -1,6 +1,6 @@
 ---
 name: tdd
-description: Use test-driven development for a feature or bug fix: define behavior with a failing test, make the smallest change that passes it, then refactor with the test suite green.
+description: "Use test-driven development for a feature or bug fix: define behavior with a failing test, make the smallest change that passes it, then refactor with the test suite green."
 ---
 
 # Test-Driven Development

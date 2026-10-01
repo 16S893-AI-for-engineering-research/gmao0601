@@ -1,0 +1,42 @@
+{
+  "source_figure": "peterson4.6.png",
+  "method": "Manual centre-line samples from the supplied raster image; values are approximate.",
+  "axes": {
+    "x": {
+      "scale": "log10",
+      "units": "Hz",
+      "calibration_points": [
+        [
+          159.0,
+          1000000.0
+        ],
+        [
+          890.0,
+          10000000000.0
+        ]
+      ]
+    },
+    "y": {
+      "scale": "log10",
+      "units": "S/m",
+      "calibration_points": [
+        [
+          48.0,
+          1000000.0
+        ],
+        [
+          728.0,
+          1e-10
+        ]
+      ]
+    }
+  },
+  "sample_count_per_series": {
+    "41 km": 14,
+    "61 km": 14,
+    "71 km": 14,
+    "81 km": 14,
+    "100 km": 14,
+    "120 km": 14
+  }
+}

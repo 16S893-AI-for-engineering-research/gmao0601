@@ -1,6 +1,6 @@
 ---
 name: recreate-scientific-figure
-description: Digitize and recreate a scientific plot from a user-supplied paper or figure image: calibrate axes, extract plotted lines and points, export approximate data, and render a reproducible matching figure.
+description: "Digitize and recreate a scientific plot from a user-supplied paper or figure image: calibrate axes, extract plotted lines and points, export approximate data, and render a reproducible matching figure."
 ---
 
 # Recreate Scientific Figure
