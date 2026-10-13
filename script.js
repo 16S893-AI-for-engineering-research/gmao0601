@@ -213,3 +213,57 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+// Assignments page: "View Details" expands/collapses the assignment's details.
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.assignment-link').forEach((link) => {
+    const details = link.nextElementSibling;
+    if (!details) return;
+
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const collapsed = details.classList.toggle('collapsed');
+      link.setAttribute('aria-expanded', String(!collapsed));
+    });
+  });
+});
+
+// Easter egg: hovering over "click" on the Assignments page rains confetti down the page.
+document.addEventListener('DOMContentLoaded', () => {
+  const trigger = document.getElementById('confetti-trigger');
+  if (!trigger) return;
+
+  let cooldown = false;
+  const PIECE_COUNT = 120;
+  const COLORS = ['#f94144', '#f3722c', '#f9c74f', '#90be6d', '#43aa8b', '#4d908e', '#577590', '#b185db'];
+
+  trigger.addEventListener('mouseenter', () => {
+    if (cooldown) return;
+    cooldown = true;
+
+    let remaining = PIECE_COUNT;
+
+    for (let i = 0; i < PIECE_COUNT; i++) {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+
+      const size = 6 + Math.random() * 8; // px
+      piece.style.left = `${Math.random() * 100}vw`;
+      piece.style.width = `${size}px`;
+      piece.style.height = `${size * (0.4 + Math.random() * 0.8)}px`;
+      piece.style.background = COLORS[Math.floor(Math.random() * COLORS.length)];
+      piece.style.setProperty('--drift', `${(Math.random() - 0.5) * 200}px`);
+      piece.style.setProperty('--spin', `${360 + Math.random() * 720}deg`);
+      piece.style.animationDuration = `${2.5 + Math.random() * 2.5}s`;
+      piece.style.animationDelay = `${Math.random() * 1}s`;
+
+      document.body.appendChild(piece);
+
+      piece.addEventListener('animationend', () => {
+        piece.remove();
+        remaining -= 1;
+        if (remaining <= 0) cooldown = false;
+      });
+    }
+  });
+});

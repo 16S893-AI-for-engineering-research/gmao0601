@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assignments | My Site</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="blue-page" data-gated="true">
+  <div id="password-gate" class="password-gate">
+    <form id="password-gate-form" class="password-gate-form">
+      <label for="password-gate-input">Clue: what class?</label>
+      <input type="password" id="password-gate-input" name="password" autocomplete="off" placeholder="Enter password" />
+      <button type="submit">Unlock</button>
+      <p id="password-gate-error" class="password-gate-error" hidden>Incorrect password, try again.</p>
+    </form>
+  </div>
+
+  <header class="site-header">
+    <nav class="nav">
+      <span class="nav-brand">16.S893/Grace</span>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="projects.html">Project</a></li>
+        <li><a href="assignments.html" class="active">Assignments</a></li>
+        <li><a href="devlog.html">Dev Log</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h1>ASSIGNMENTS</h1>
+    <p class="subtitle">16.S893 Assignments and Deliverables</p>
+
+    <div class="assignments-container">
+      <div class="assignment-card">
+        <h3>Assignment 1: Website Creation</h3>
+        <a href="#" class="assignment-link" role="button" aria-expanded="false">View Details</a>
+        <div class="assignment-details collapsed">
+          <p>Creation of this website. Please <span id="confetti-trigger" class="easter-egg">click</span> around!</p>
+        </div>
+      </div>
+
+      <div class="assignment-card">
+        <h3>Assignment 2: Figure Recreation</h3>
+        <a href="#" class="assignment-link" role="button" aria-expanded="false">View Details</a>
+        <div class="assignment-details collapsed">
+          <p>
+            The goal of this assignment was to ask an agent to recreate a scientific figure. The figure chosen for this assignment was from Richard Peterson&rsquo;s doctoral thesis <em>Codesign of Plasma Avoidant and Plasma Embracive Antenna Topologies for Hypersonic Applications</em>. The original image is shown below.
+          </p>
+          <figure class="assignment-figure">
+            <img src="assignment2/peterson4.6.png" alt="Original figure 4.6 from Richard Peterson's thesis" />
+            <figcaption>Original figure</figcaption>
+          </figure>
+          <p>
+            The agent then created a script to digitize the plot and recreate it, using a script that it wrote and is visible in the <a href="https://github.com/16S893-AI-for-engineering-research/gmao0601/tree/main/assignment2">GitHub repository under assignment2</a>. The recreated image was nearly identical, as seen below.
+          </p>
+          <figure class="assignment-figure">
+            <img src="assignment2/recreated_peterson/peterson4_6_recreation.png" alt="Agent-recreated version of figure 4.6" />
+            <figcaption>Recreated figure</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="assignment-card">
+        <h3>Assignment 3</h3>
+        <a href="#" class="assignment-link" role="button" aria-expanded="false">View Details</a>
+        <div class="assignment-details collapsed">
+          <p>Details for assignment 3 go here.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    &copy; 2026 Grace. Built with plain HTML &amp; CSS.
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

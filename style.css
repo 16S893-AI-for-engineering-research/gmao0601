@@ -821,3 +821,82 @@ body.gate-locked .password-gate {
   color: #ff6b6b;
   font-size: 0.85rem;
 }
+
+/* ---- Assignments ---- */
+.assignment-card {
+  border-left: 3px solid #ddd;
+  padding-left: 1rem;
+  margin-bottom: 2rem;
+}
+
+.assignment-card h3 {
+  margin-bottom: 0.25rem;
+}
+
+.assignment-link {
+  cursor: pointer;
+  user-select: none;
+}
+
+.assignment-link::before {
+  content: '▸';
+  display: inline-block;
+  margin-right: 0.4rem;
+  transition: transform 0.2s ease;
+}
+
+.assignment-link[aria-expanded="true"]::before {
+  transform: rotate(90deg);
+}
+
+.assignment-details {
+  overflow: hidden;
+  max-height: 3000px;
+  opacity: 1;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+.assignment-details.collapsed {
+  max-height: 0;
+  opacity: 0;
+  margin: 0;
+}
+
+/* ---- Easter egg: confetti ---- */
+.confetti-piece {
+  position: fixed;
+  top: -20px;
+  pointer-events: none;
+  z-index: 9999;
+  animation: confetti-fall 3s linear forwards;
+}
+
+@keyframes confetti-fall {
+  from {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  to {
+    transform: translate(var(--drift), 110vh) rotate(var(--spin));
+    opacity: 0.9;
+  }
+}
+
+.assignment-figure {
+  margin: 1rem 0;
+}
+
+.assignment-figure img {
+  display: block;
+  max-width: 100%;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.assignment-figure figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #555;
+}
