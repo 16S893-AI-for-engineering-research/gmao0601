@@ -19,3 +19,6 @@ venv/
 
 # Logs
 *.log
+
+# Reference library (agent-only skills)
+.pi/ref-library/
