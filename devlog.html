@@ -34,6 +34,22 @@
     <p class="subtitle" id="scramble-subtitle" data-text="Notes on progress, decisions, and things I'm learning along the way.">Notes on progress, decisions, and things I'm learning along the way.</p>
 
     <div class="log-entry">
+      <p class="log-date">October 14/15, 2026</p>
+      <h2 class="log-toggle" tabindex="0" role="button" aria-expanded="true">Beginnings of Specialized Agent Implementation + a little Housekeeping</h2>
+      <div class="log-body">
+        <p>
+          I spent some time to set up backlog and download the subagents extension. I also added the assignments page, so the website should be easier to use to see class progress.
+        </p>
+        <p>
+          In Backlog, I used GPT’s Sol 6 to plan out my entire project. The current tasks seem reasonable, but I’m sure they will need to be broken down further as the project progresses, as demonstrated by the attempt to build a specialized subagent. I started with Sonnet 5.5 for this, asking it to set up the architecture for the agent, as given in class notes. Issues were immediately encountered in just trying to navigate it to the reference files. I have large manuals that list the hooks for the solver. When pointed to the files to write a SKILL that would reference these files, the agent tried to read them and then broke. The terminal was requesting access to all kinds of things (I’m not sure why), and even after stopping the command, the entire session was unusable and would error after every input.
+        </p>
+        <p>
+          This leads into the following issue. Current subagent doesn’t work since I don’t think it can actually handle reading through the large pdfs I currently have in my reference library (not uploaded to GitHub). Next steps would be to try to refine the files and cut down all unnecessary fluff by hand or with a more powerful agent. GPT Sol ended up writing the current skills for the specialized agent, but I need to refine my references so that smaller models can handle them cleanly without bugging out again.
+        </p>
+      </div>
+    </div>
+
+    <div class="log-entry">
       <p class="log-date">September 30, 2026</p>
       <h2 class="log-toggle" tabindex="0" role="button" aria-expanded="true">Figure Recreation and some New Skills</h2>
       <div class="log-body">
