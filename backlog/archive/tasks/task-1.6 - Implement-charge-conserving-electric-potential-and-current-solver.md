@@ -4,13 +4,14 @@ title: Implement charge-conserving electric-potential and current solver
 status: To Do
 assignee: []
 created_date: '2026-10-12 16:40'
-updated_date: '2026-10-12 16:40'
+updated_date: '2026-10-21 20:38'
 labels: []
 dependencies:
   - TASK-1.3
   - TASK-1.4
 references:
   - planV1.0.md
+  - V1.1.md
 parent_task_id: TASK-1
 type: task
 ordinal: 7000
@@ -29,3 +30,9 @@ The low-induction candidate model requires a spatial charge-conservation solve, 
 - [ ] #3 Discrete charge-balance and solver-residual diagnostics meet documented tolerances, including MPI partitioned runs.
 - [ ] #4 Near-zero conductivity and solver nonconvergence have documented and test-covered behavior.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Superseded by the user-approved V1.1 equation-by-equation structure under TASK-1.5. The user will supply equations and their order; do not assume this candidate-specific equation is required. Archived as superseded, not completed or verified.
+<!-- SECTION:NOTES:END -->

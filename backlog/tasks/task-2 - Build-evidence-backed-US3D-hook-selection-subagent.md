@@ -5,20 +5,22 @@ status: In Progress
 assignee:
   - '@assistant'
 created_date: '2026-10-15 04:13'
-updated_date: '2026-10-15 04:17'
-labels: []
+updated_date: '2026-10-21 20:37'
+labels:
+  - setup
 dependencies: []
 references:
   - >-
     https://16s893-ai-for-engineering-research.github.io/class-repo/sessions/pod-clinic-1/slides/#3
+  - V1.1.md
 type: feature
-ordinal: 13000
+ordinal: 4000
 ---
 
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-The project needs a repeatable, equation-driven way to locate candidate integration hooks in large US3D manuals without filling the parent context or mistaking documentation claims for verified runtime capabilities. The manuals are present in .pi/ref-library, while .pi/agents/hook-selection.md is only a stub. This specialist should support the existing TASK-1.1 audit, not substitute for checking an installed version or a working example plugin. Do not scan the PDFs during agent setup; document analysis belongs to runs of the specialist on explicitly requested equations.
+Prepare a reusable equation-to-hook specialist, distinct from using it in TASK-1.3. Inputs are the existing four skills, manuals/searchable reference and small evaluation fixtures; future uses receive user-approved equations/order and a target version or explicit unknown. The skills already exist and their implementation notes are retained. Remaining agent integration, bounded evidence retrieval and fixture evaluation need focused assignments before execution. Reuse TASK-3 navigation rather than re-summarizing manuals. Do not scan PDFs merely to configure the agent. No local US3D installation is available, and documentation findings do not establish runtime support. The specialist does not choose physics or equation order; an equivalent manual audit may proceed without waiting for it.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
@@ -39,4 +41,6 @@ Current requested slice: write four project skill SKILL.md files (equation-to-re
 
 <!-- SECTION:NOTES:BEGIN -->
 Wrote four project skills under .pi/skills/: equation-to-requirements, manual-evidence-search, hook-capability-mapping, and hook-report-review. Validated each SKILL.md frontmatter, nonempty body, and referenced skill paths with a local static check. Did not read either US3D PDF. Agent wiring, PDF helper/tool decisions, and fixture-based evaluation remain for future work.
+
+V1.1 reconciliation: the recorded skills-only plan describes the completed requested slice, not the entire remaining feature. Preserve its evidence. Agent integration, bounded retrieval and fixture evaluation remain unfinished; research and record a bounded current plan when resuming. Project-specific hook assessment is now TASK-1.3.
 <!-- SECTION:NOTES:END -->

@@ -4,14 +4,14 @@ title: Couple Lorentz force and electromagnetic energy to US3D flow
 status: To Do
 assignee: []
 created_date: '2026-10-12 16:40'
-updated_date: '2026-10-12 16:40'
+updated_date: '2026-10-21 20:38'
 labels: []
 dependencies:
   - TASK-1.4
   - TASK-1.5
-  - TASK-1.6
 references:
   - planV1.0.md
+  - V1.1.md
 parent_task_id: TASK-1
 type: task
 ordinal: 8000
@@ -30,3 +30,9 @@ Potential/current results must alter flow through momentum and energy sources co
 - [ ] #3 Documented timestep or iterative convergence conditions and failure handling are exercised by integration tests.
 - [ ] #4 Charge, momentum-source, and electromagnetic energy-budget diagnostics are available in output.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Superseded by the user-approved V1.1 equation-by-equation structure under TASK-1.5. The user will supply equations and their order; do not assume this candidate-specific equation is required. Archived as superseded, not completed or verified.
+<!-- SECTION:NOTES:END -->
