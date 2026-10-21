@@ -34,6 +34,19 @@
     <p class="subtitle" id="scramble-subtitle" data-text="Notes on progress, decisions, and things I'm learning along the way.">Notes on progress, decisions, and things I'm learning along the way.</p>
 
     <div class="log-entry">
+      <p class="log-date">October 21, 2026</p>
+      <h2 class="log-toggle" tabindex="0" role="button" aria-expanded="true">Astra and I had an adventure</h2>
+      <div class="log-body">
+        <p>
+          I used Astra for this. I had it deploy subagents to go through all of the US3D documentation that I supplied it (about 400 pages). It churned for about 20 minutes, before I realized all the subagents were using Astra as well. I paused it and had it complete the task using Sonnet (it used Sonnet 4.6). There are now summaries for all chapters for the agents to reference in the future. In all, it took about 30 minutes and spent about $20.
+        </p>
+        <p>
+          I went through the Backlog tasks more carefully, and the agent seems to overestimate its capabilities in the breakdown of tasks, so spent some time breaking down the tasks more thoroughly. The new tasks are smaller, and hopefully will not overwhelm the less complex agents. I am currently a bit unsure about whether I would like the documentation references to be broken down into a specialized agent or a skill, since the current plan is to deploy subagents to find the necessary hooks for equations I would like to implement, so they would all ideally be able to quickly navigate the documentation.
+        </p>
+      </div>
+    </div>
+
+    <div class="log-entry">
       <p class="log-date">October 14/15, 2026</p>
       <h2 class="log-toggle" tabindex="0" role="button" aria-expanded="true">Beginnings of Specialized Agent Implementation + a little Housekeeping</h2>
       <div class="log-body">
