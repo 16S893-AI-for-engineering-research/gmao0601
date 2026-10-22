@@ -1,30 +1,34 @@
 ---
 name: hook-report-review
-description: Audit a proposed equation-to-US3D-hook report for traceable citations, unsupported claims, version conflicts, and missing verification. Use before sending hook recommendations to the user.
+description: Check that a hook-capability-mapping report accounts for every requested variable (and every equation term, when equations were supplied). Use before sending a variable-to-hook report to the user.
 ---
 
-# Hook report review
+# Hook report review (coverage check)
 
-Review the outputs of `equation-to-requirements`, `manual-evidence-search`, and `hook-capability-mapping`. This is a quality gate, not a second opportunity to guess missing API facts.
+This is a completeness check only. It confirms that every variable has been accounted for. It does not re-search the manuals, judge the physics, or add new hooks.
 
-## Review checklist
+## Inputs
 
-- Every user equation/term and requirement ID appears in the mapping, or is explicitly listed as unaddressed. No new physical assumption is presented as user-specified.
-- Every claimed interface, lifecycle, permitted access, and restriction has a **specific** document filename, PDF page index, and short supporting excerpt. Check that the excerpt actually supports the precise claim, not just a related topic. Cite printed page numbers separately if present.
-- Each claim is marked documented, tested on the target installation, or unknown. Do not upgrade a manual citation to a runtime guarantee. Note manual revision versus target US3D version and whether that match is confirmed.
-- Conflicting evidence, incomplete page coverage, unreadable/scanned pages, and unsuccessful searches remain visible. A scoped negative result must not be described as a global absence.
-- Read/write locations, units/signs, update ordering, source/flux distinction, boundary behavior, parallel exchange, restart, and any coupled solve are accounted for or explicitly marked unverified.
-- Proposed tests and blockers are actionable. Do not state that a hook can host a global solve solely because it can add a local source term.
+- The **variable list**: either the user's own list, or the variable list from `equation-to-requirements`.
+- The **requirements table** from `equation-to-requirements`, if equations were supplied.
+- The **report** from `hook-capability-mapping`.
 
-If a claim fails review, remove it or downgrade it to a question with the exact missing evidence. Do not fabricate citations. If a required source cannot be checked, say so and return the unresolved item rather than presenting a definitive recommendation.
+## Checks
 
-## Report format
+1. **Every variable is present.** Each variable in the list appears in the report's summary table under the same name. Flag any that are missing, renamed without explanation, merged, or split.
+2. **Every intent is covered.** If a variable needs more than one intent (e.g. `create` and `save`), the report addresses each one.
+3. **Every variable has a status.** Allowed values are `documented`, `partial`, `conflicting` or `not found`. A blank or vague status counts as missing.
+4. **Every non-`not found` row has a citation:** manual, section and PDF page. A `not found` row lists the chapters that were searched.
+5. **Every equation term is covered** (only when equations were supplied). Each term ID in the requirements table appears in the `used by` column of at least one variable. Flag any term with no variables.
+6. **No extra variables.** Flag variables in the report that are not in the input list, unless the report explains why they are needed.
 
-Return these headings in order:
+## Output
 
-1. **Scope** — supplied equations, target version or `unknown`, manuals searched, ranges and extraction limitations.
-2. **Requirements-to-hooks matrix** — IDs, candidate hooks, required access/timing, citations with excerpts, confidence/status, and blockers.
-3. **Unresolved questions and conflicts** — including missing pages, version mismatches, and assumptions needing user approval.
-4. **Verification on target US3D** — small, concrete example-plugin/build/runtime checks required before implementation decisions.
+Return:
 
-Keep the report compact enough for a parent agent to inspect; provide a location for any larger evidence log if one was explicitly requested. Do not inspect PDFs as part of skill authoring or invoke a document-analysis run without a user-provided equation request.
+- **Result:** `complete` or `incomplete`.
+- **Coverage table:** `variable | intents requested | intents covered | status | citation present (y/n) | problem`.
+- **Uncovered equation terms** (if equations were supplied).
+- **Fixes needed:** a short list of what `hook-capability-mapping` must add or correct.
+
+If the result is `incomplete`, send the fixes back to `hook-capability-mapping` before the report goes to the user.

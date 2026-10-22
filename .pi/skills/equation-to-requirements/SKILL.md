@@ -21,4 +21,13 @@ Ask for or record: the exact equations (including definitions of symbols), the i
 
 ## Handoff
 
-Return a concise requirements table with columns: `ID | equation/term | operation | reads (units/location) | writes (units/location) | timing | boundary/parallel/restart needs | unresolved questions`. Supply the target version or `unknown`. Pass this table to `manual-evidence-search` and `hook-capability-mapping`; do not propose named hooks here.
+Return two things:
+
+1. **Requirements table:** `ID | equation/term | operation | reads (units/location) | writes (units/location) | timing | boundary/parallel/restart needs | unresolved questions`. Supply the target version or `unknown`.
+2. **Variable list for `hook-capability-mapping`:** one row per distinct variable across all equations. Merge duplicates, and give each variable every intent it needs:
+
+   `variable | meaning + units | intent (read / create / write / save, or unknown) | location (cell / face / boundary / node / global, or unknown) | timing needed | used by (term IDs) | notes`
+
+   Include solver state that is read (e.g. density, velocity, temperature), new fields or properties that must be created (e.g. a conductivity, an electric potential, a magnetic field), contributions that are written (e.g. a momentum or energy source term, a face flux), and anything that must persist across restarts or appear in output. Use the user's symbol names. Do not guess US3D names or hooks; that is the mapping skill's job.
+
+Pass the variable list to `hook-capability-mapping`, which also accepts a variable list given directly by the user. Keep the requirements table so `hook-report-review` can check that every term is covered. Do not propose named hooks here.

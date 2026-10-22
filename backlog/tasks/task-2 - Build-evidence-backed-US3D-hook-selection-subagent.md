@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@assistant'
 created_date: '2026-10-15 04:13'
-updated_date: '2026-10-21 20:37'
+updated_date: '2026-10-22 04:42'
 labels:
   - setup
 dependencies: []
@@ -43,4 +43,6 @@ Current requested slice: write four project skill SKILL.md files (equation-to-re
 Wrote four project skills under .pi/skills/: equation-to-requirements, manual-evidence-search, hook-capability-mapping, and hook-report-review. Validated each SKILL.md frontmatter, nonempty body, and referenced skill paths with a local static check. Did not read either US3D PDF. Agent wiring, PDF helper/tool decisions, and fixture-based evaluation remain for future work.
 
 V1.1 reconciliation: the recorded skills-only plan describes the completed requested slice, not the entire remaining feature. Preserve its evidence. Agent integration, bounded retrieval and fixture evaluation remain unfinished; research and record a bounded current plan when resuming. Project-specific hook assessment is now TASK-1.3.
+
+Skills redesign (user-directed): hook-capability-mapping rewritten as variables-to-hooks lookup that starts from .pi/ref-library/summaries and verifies cited PDF pages; equation-to-requirements now also emits a deduplicated variable list for it (mapping also works standalone); hook-report-review reduced to a variable/term coverage check; manual-evidence-search deleted (summaries + per-page PDF checks replace it). Skills now: equation-to-requirements, hook-capability-mapping, hook-report-review. V1.1.md still lists four skills.
 <!-- SECTION:NOTES:END -->
