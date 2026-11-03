@@ -22,3 +22,15 @@ Do not edit Backlog task, draft, document, decision, or milestone markdown files
 
 </CRITICAL_INSTRUCTION>
 <!-- BACKLOG.MD GUIDELINES END -->
+
+## Active working scope
+
+- `backlog/` is the only authoritative task plan for this workspace.
+- `archived-plans/` and `retired-skills/` contain abandoned or historical material, not active requirements or instructions.
+- Do not read, search within, execute, or use those directories unless the user explicitly asks to consult historical material. Exclude them from repository-wide searches.
+- Do not recover superseded plans or retired skills from Git history unless the user explicitly asks.
+- Do not carry requirements from old plans, prior sessions, or historical material into the active plan without the user's approval.
+- Other planning documents are not authoritative unless the user explicitly designates them as part of the active plan. Ask if their status is unclear.
+- If an active document links to abandoned material, ask before following the link.
+- Use only currently enabled skills relevant to the active work. Do not load or run retired skills unless explicitly requested.
+- These scope rules govern agent behavior; they are not filesystem access controls.
