@@ -1,4 +1,4 @@
-project_name: "plasma_plugin"
+project_name: "US3D_plasma_build"
 default_status: "To Do"
 statuses: ["To Do", "In Progress", "Done"]
 labels: []
