@@ -1,9 +1,11 @@
 ---
 id: TASK-2
 title: Build reusable equations-to-hooks capability
-status: To Do
-assignee: []
+status: In Progress
+assignee:
+  - '@pi'
 created_date: '2026-11-03 22:08'
+updated_date: '2026-11-04 19:20'
 labels: []
 dependencies:
   - TASK-1
@@ -28,3 +30,27 @@ Turn user-supplied equations into reviewable US3D integration mappings rather th
 - [ ] #5 Missing definitions elicit targeted questions; the capability requires mapping approval before downstream skeleton generation.
 - [ ] #6 Local checks/examples cover supported mappings, incomplete inputs, unsupported operations, and consistency between the human-readable and structured outputs; no local result claims US3D runtime verification.
 <!-- AC:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Per user direction, keep the implementation to one self-contained .pi/skills/equations-to-hooks/SKILL.md for now. This replaces the earlier multi-file implementation plan.
+2. Remove the added helper scripts, tests, fixtures, reference contract and generated Python caches.
+3. Keep concise skill instructions for symbolic equations and variable definitions, targeted clarification, original-manual-backed mapping, and explicit user approval before downstream skeleton work. No mandatory input form or source-location requirement.
+4. Describe readable and structured mapping outputs within the skill without adding a schema, renderer, validator or automated approval machinery.
+5. Check that only SKILL.md remains and that it has no references to removed files. Keep TASK-2 open; broader acceptance verification is deferred.
+<!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+User selected skill packaging. Interface proposal and implementation plan are being prepared; implementation remains gated on interface approval.
+
+Reviewed Pi skill documentation, an existing project skill layout, and the reference-library map. Manuals document 1.2.1; installed version remains unconfirmed. Interface proposal recorded in the plan for user approval. No skill implementation files created.
+
+User simplified the proposed input to symbolic equations and variable definitions. Awaiting approval to implement the revised interface; no skill files created.
+
+User approved the revised simple-input workflow: symbolic equations and variable definitions, targeted clarification, documented mapping, explicit mapping approval. Implementation authorized; packaging is a project skill with bundled Python standard-library report helpers and examples.
+
+Simplified at user request to a single self-contained SKILL.md. Removed the added scripts, tests, JSON fixtures, examples README, reference contract and Python caches. Removed automated digest/gate machinery. Only SKILL.md remains; checked that it has no references to removed supporting files. Broader task acceptance verification remains deferred; task stays In Progress.
+<!-- SECTION:NOTES:END -->

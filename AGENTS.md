@@ -23,6 +23,10 @@ Do not edit Backlog task, draft, document, decision, or milestone markdown files
 </CRITICAL_INSTRUCTION>
 <!-- BACKLOG.MD GUIDELINES END -->
 
+## US3D reference navigation
+
+For US3D documentation or supplied example-case questions, start at [`.pi/ref-library/MAP.md`](.pi/ref-library/MAP.md). It links existing topic/chapter indexes, explains source authority, and records artifact availability and unresolved environment questions. Use it as reference navigation, not as a task plan.
+
 ## Active working scope
 
 - `backlog/` is the only authoritative task plan for this workspace.

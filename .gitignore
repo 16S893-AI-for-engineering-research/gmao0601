@@ -20,5 +20,6 @@ venv/
 # Logs
 *.log
 
-# Reference library (agent-only skills)
-.pi/ref-library/
+# Keep supplied reference materials local; version the navigation map only.
+.pi/ref-library/*
+!.pi/ref-library/MAP.md
