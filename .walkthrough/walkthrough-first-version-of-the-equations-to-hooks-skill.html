@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; font-src data:; style-src 'unsafe-inline'; script-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; object-src 'none'"><title>Walkthrough: first version of the equations-to-hooks skill</title><style>
+:root{color-scheme:light;--paper:#fcfcfa;--ink:#242a30;--muted:#535e68;--rule:#d9dfe2;--tint:#f0f3f4;--link:#185a86;--warning:#933a22}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.65 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}main{max-width:850px;margin:auto;padding:48px 28px 80px}h1,h2,h3,h4{line-height:1.25;text-wrap:balance}h1{font-size:2.1rem;margin:8px 0 18px}h2{font-size:1.45rem;margin:36px 0 16px}h3{font-size:1.1rem}h4{font-size:1rem;margin-bottom:8px}p{margin:12px 0;white-space:pre-line;overflow-wrap:anywhere}p code,li code,td code,th code,h2 code{font-size:.88em;background:var(--tint);padding:1px 4px;border-radius:3px}.math-display{overflow-x:auto;overflow-y:hidden;margin:16px 0}.katex-display{margin:0}a.ref{text-decoration-style:dotted}.prose-table{margin:18px 0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}.prose-table th{border-bottom:1px solid var(--ink);font-weight:600}.prose-table td,.prose-table th{white-space:normal;min-width:5rem}.prose-table tbody tr:last-child td{border-bottom:0}ol{padding-left:24px}a{color:var(--link);text-underline-offset:3px;overflow-wrap:anywhere}a:hover{text-decoration-thickness:2px}:focus-visible{outline:3px solid #a65f00;outline-offset:4px}:target{scroll-margin-top:20px}.mode,.secondary,figcaption{font-size:.875rem;color:var(--muted)}.mode{letter-spacing:.04em}.lead{font-size:1.15rem}.status{font-size:.8rem;font-weight:600;border:1px solid var(--rule);padding:2px 6px;border-radius:4px;margin-right:6px;white-space:nowrap}.warning{color:var(--warning);font-weight:600}.evidence{border-left:2px solid var(--rule);padding-left:16px;margin:20px 0}.evidence p{margin:8px 0}.record-id{font-size:.75rem;color:var(--muted);margin-left:5px}section,header,details{min-width:0}details{border-top:1px solid var(--rule);padding:12px 0}summary{cursor:pointer;overflow-wrap:anywhere}summary:hover{color:var(--link)}details[open]>summary{margin-bottom:16px}details details{margin:12px 0 0 16px}.record>summary{font-weight:600}.record>summary .secondary{font-weight:400}pre{background:var(--tint);padding:14px;overflow:auto;max-height:34rem;font-size:.8rem;line-height:1.6;tab-size:4}pre code{white-space:pre;overflow-wrap:normal}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}blockquote{margin:10px 0}blockquote pre{max-height:18rem}.table-scroll{overflow:auto;max-height:32rem}table{border-collapse:collapse;width:100%;font-size:.875rem}th,td{text-align:left;vertical-align:top;border-bottom:1px solid var(--rule);padding:9px 12px;white-space:pre-wrap;overflow-wrap:anywhere;min-width:7rem}dl{font-size:.875rem;display:grid;grid-template-columns:9rem minmax(0,1fr);gap:8px 16px}dt{color:var(--muted)}dd{margin:0;overflow-wrap:anywhere}ul{padding-left:24px}li{margin:12px 0;overflow-wrap:anywhere}figure{margin:26px 0}figure img{display:block;width:100%;height:auto}.image-map{position:relative;width:100%;line-height:0}.image-map>a{position:absolute;display:block;border:2px solid transparent;border-radius:3px}.image-map>a:hover{background:#185a8618;border-color:#185a8680}.image-map>a:focus-visible{outline:3px solid #a65f00;outline-offset:0;background:#ffffff55}.figure-links{font-size:.875rem;display:flex;flex-wrap:wrap;gap:8px 20px;list-style:none;padding:0}.figure-links li{margin:0}figcaption{margin-top:10px}#limits{border-left:3px solid #ad7952;padding-left:18px}#log,#technical{margin-top:32px}.prepared-output>h4{color:var(--muted)}.toc{font-size:.875rem;border-left:2px solid var(--rule);padding:2px 0 2px 14px;margin:0 0 24px}.toc p{margin:0 0 4px;color:var(--muted);font-weight:600;white-space:normal}.toc ol{margin:0;padding-left:18px}.toc li{margin:3px 0}.toc a{text-decoration:none}.toc a:hover{text-decoration:underline}@media(min-width:1320px){.toc{position:fixed;top:48px;left:calc(50% - 425px - 240px);width:210px;max-height:calc(100vh - 96px);overflow:auto}}.with-tool{display:flex;align-items:center;gap:10px}.copy,.log-tools button{font:inherit;font-size:.75rem;font-weight:400;padding:2px 9px;border:1px solid var(--rule);border-radius:4px;background:var(--paper);color:var(--ink);cursor:pointer}.copy:hover{border-color:var(--link);color:var(--link)}.log-tools{display:flex;gap:8px;margin:0 0 8px}.log-tools button{font:inherit;font-size:.8rem;padding:3px 10px;border:1px solid var(--rule);border-radius:4px;background:var(--paper);color:var(--ink);cursor:pointer}.log-tools button:hover{border-color:var(--link);color:var(--link)}pre.diff code>span{display:block;margin:0 -14px;padding:0 14px}.d-add{background:#dcebf9;color:#0b3d6b}.d-del{background:#fbe1d7;color:#7a2408}.d-hunk{color:#6b4a9b;background:#f1ecf7}.d-file{font-weight:600;color:var(--ink)}pre.diff code{display:block;min-width:max-content}.diff-key{font-size:.8rem;margin:4px 0 6px;white-space:normal}.diff-key span{padding:1px 6px;border-radius:3px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;margin-right:6px}section>ul>li,section>ol>li,.lead li{margin:6px 0;line-height:1.55}section ul ul{margin:4px 0}
+@media(max-width:500px){body{font-size:16px}main{padding:24px 18px 48px}h1{font-size:1.7rem}h2{font-size:1.3rem}dl{grid-template-columns:1fr;gap:3px}dd{margin-bottom:10px}details details{margin-left:8px}}
+@media print{.toc,.log-tools,.copy{display:none}.d-add,.d-del,.d-hunk{-webkit-print-color-adjust:exact;print-color-adjust:exact}body{background:white;color:black;font-size:11pt}main{max-width:none;padding:0}a{color:inherit}pre,.table-scroll{max-height:none}pre{white-space:pre-wrap}pre code{white-space:pre-wrap;overflow-wrap:anywhere}figure{break-inside:avoid}.image-map>a{display:none}summary{color:black}}
+</style></head><body><main>
+<nav class="toc" aria-label="Contents"><p>Contents</p><ol><li><a href="#what-changed">What the commit changes</a></li><li><a href="#skill-workflow">How the skill is meant to work</a></li><li><a href="#scope-decisions">Scope decisions recorded in the task</a></li><li><a href="#checks-run">What I checked</a></li><li><a href="#checks">Checks</a></li><li><a href="#limits">Material limits</a></li><li><a href="#log">Exact command log</a></li></ol></nav><header><p class="mode">Verification</p><h1>Walkthrough: first version of the equations-to-hooks skill</h1><p>Scope: <a href="https://github.com/16S893-AI-for-engineering-research/gmao0601/commit/3bacf190a9a431cd89c3f484a60c13ff6c0c9b54">Last code-changing commit: initial skill for task 2</a></p></header>
+<section id="overview"><div class="lead"><p>The commit adds one self-contained Pi skill, <code>equations-to-hooks</code>. It also adds a map pointer to <code>AGENTS.md</code> and updates <code>.gitignore</code> and two task files. Static checks pass. The skill was never run on an equation, so its behavior is untested.</p></div></section>
+<section id="what-changed"><h2>What the commit changes</h2><p>The latest commit, <code>devlog update</code>, only edits <code>devlog.html</code>. The last commit that changed project files is <strong>initial skill for task 2</strong>, so this walkthrough covers that one. It touches five files and adds 183 lines. The working tree is not included. It has an unrelated edit to the task-2 file and an untracked <code>reports/</code> directory.</p><ul><li>New skill <code>.pi/skills/equations-to-hooks/SKILL.md</code> (92 lines).</li><li><code>AGENTS.md</code> gains a pointer to the reference-library map.</li><li><code>.gitignore</code> now ignores everything under <code>.pi/ref-library/</code> except <code>MAP.md</code>.</li><li>Task 1 is marked Done and re-scoped as a map of the reference library. Task 2 moves to In Progress with a simplified plan.</li></ul><div class="evidence"><p>Per-commit file stats show the latest commit touches only the devlog.</p><blockquote><pre><code>devlog.html | 16 ++++++++++++++++</code></pre></blockquote><p><a href="#r1">Find recent commits and which touched code rather than only the devlog<small class="record-id">r1</small></a></p></div><div class="evidence"><p>The skill file, the AGENTS.md pointer and the .gitignore change.</p><blockquote><pre><code>+!.pi/ref-library/MAP.md</code></pre></blockquote><p><a href="#r2">Read the skill and config diff of the commit<small class="record-id">r2</small></a></p></div></section>
+<section id="skill-workflow"><h2>How the skill is meant to work</h2><p>The skill turns symbolic equations and variable definitions into a documented mapping to US3D hooks. A hook is a user-code entry point in the solver. The skill stops at a mapping the user approves. It does not generate plugins or run US3D.</p><ol><li><strong>Clarify.</strong> Ask only the questions that change the mapping, such as which governing equation receives a flux. Confirm the target US3D version.</li><li><strong>Research.</strong> Start at <code>MAP.md</code>. Check hook names, signatures and timing against the original manual, citing file, section and PDF page.</li><li><strong>Map.</strong> Give each equation and each supporting operation (storage, initialization) an ID, a hook, timing, data access and status. Unknown fields stay unresolved.</li><li><strong>Report.</strong> Write a Markdown report and a JSON mapping with matching IDs.</li><li><strong>Approve.</strong> Every new or changed mapping is unapproved until the user approves that revision.</li></ol><p>A search miss counts as unverified, not unsupported. A mapping is marked unsupported only when the documentation contradicts the requested operation.</p><div class="evidence"><p>Workflow and boundary text from the skill file.</p><blockquote><pre><code>Treat every new or changed mapping as unapproved.</code></pre></blockquote><p><a href="#r2">Read the skill and config diff of the commit<small class="record-id">r2</small></a></p></div><div class="evidence"><p>The skill&#39;s section headings match the five steps plus boundaries and usage.</p><blockquote><pre><code>### 5. Obtain explicit approval</code></pre></blockquote><p><a href="#r5">Check the skill&#39;s MAP pointer resolves and local links work<small class="record-id">r5</small></a></p></div></section>
+<section id="scope-decisions"><h2>Scope decisions recorded in the task</h2><p>The task-2 plan says the skill was cut back at the user&#39;s request. An earlier plan had helper scripts, tests, fixtures and a reference contract. The plan now keeps only one <code>SKILL.md</code>, and broader acceptance verification is deferred.</p><ul><li>Task 2 stays open.</li><li>The skill requires no input form, schema or validator.</li><li>Task 1 was re-scoped from an inventory to a map, and its acceptance criteria are all checked in the committed file. This walkthrough did not re-verify those criteria. Only the map&#39;s local links were re-checked.</li></ul><div class="evidence"><p>Task-2 plan after the simplification.</p><blockquote><pre><code>keep the implementation to one self-contained .pi/skills/equations-to-hooks/SKILL.md for now</code></pre></blockquote><p><a href="#r3">Read the task-file changes and check the working tree state<small class="record-id">r3</small></a></p></div></section>
+<section id="checks-run"><h2>What I checked</h2><p>These are static checks on the committed files. None exercises the skill.</p><ul><li>The front matter name equals the directory name, <code>equations-to-hooks</code>, and the description is 343 characters.</li><li><code>MAP.md</code> is not ignored and is the only tracked file in <code>.pi/ref-library</code>. A sample sibling, <code>chapters</code>, is ignored by rule <code>.gitignore:24</code>.</li><li>The skill, <code>AGENTS.md</code> and <code>MAP.md</code> all refer to <code>.pi/ref-library/MAP.md</code>.</li><li>Links in <code>AGENTS.md</code> (1) and <code>MAP.md</code> (47) all resolve to existing files. Anchors were not checked.</li><li><code>SKILL.md</code>, <code>AGENTS.md</code> and <code>.gitignore</code> are unchanged between this commit and the latest one.</li></ul><p>The commit message says nothing about the helper files. <code>git ls-tree</code> shows none of the removed scripts or fixtures at this commit. The one match, <code>assignment2/tests/test_recreate_plot.py</code>, is an unrelated file from another project.</p><div class="evidence"><p>Front-matter and name check, ignore rules, and no skill diff after the commit.</p><blockquote><pre><code>name equations-to-hooks | dir match True | desc chars 343</code></pre></blockquote><p><a href="#r4">Check skill packaging, front matter, ignore rules and leftovers<small class="record-id">r4</small></a></p></div><div class="evidence"><p>Link check of AGENTS.md and MAP.md.</p><blockquote><pre><code>.pi/ref-library/MAP.md links 47 missing []</code></pre></blockquote><p><a href="#r5">Check the skill&#39;s MAP pointer resolves and local links work<small class="record-id">r5</small></a></p></div></section>
+<section id="checks"><h2>Checks</h2><ul><li><span class="status">passed</span><strong>Skill front matter and location</strong><p>Name matches its directory, and the description is present. Pi loading was not tried.</p><a href="#r4">Check skill packaging, front matter, ignore rules and leftovers<small class="record-id">r4</small></a></li><li><span class="status">passed</span><strong>Ignore rule exposes only MAP.md</strong><p>MAP.md is not ignored and is the only tracked file there. The sampled sibling is ignored.</p><a href="#r4">Check skill packaging, front matter, ignore rules and leftovers<small class="record-id">r4</small></a></li><li><span class="status">passed</span><strong>MAP.md pointer and local links</strong><p>The 1 link in AGENTS.md and 47 in MAP.md resolve to existing files. Anchors were not checked.</p><a href="#r5">Check the skill&#39;s MAP pointer resolves and local links work<small class="record-id">r5</small></a></li><li><span class="status">not-run</span><strong>Skill behavior on an example equation</strong><p>The skill was not invoked on the example <code>J = -D ∇φ</code> or any other input.</p></li><li><span class="status">not-run</span><strong>Citations against the original manual</strong><p>MAP.md hook and page claims were not re-checked against the PDFs.</p></li><li><span class="status warning">blocked</span><strong>Workflow diagram</strong><p>The figure toolchain is missing, so the workflow is a numbered list instead.</p><a href="#r6">Check figure tooling and draw the skill&#39;s five-step workflow<small class="record-id">r6</small></a></li></ul></section>
+<section id="limits"><h2>Material limits</h2><ul><li><p>No workflow diagram was drawn. The figure tooling is missing <code>uv</code>, <code>kpsewhich</code>, IBM Plex Mono and the NewComputerModern math font. A numbered list replaces it.</p><a href="#r6">Check figure tooling and draw the skill&#39;s five-step workflow<small class="record-id">r6</small></a></li><li><p>The skill is instruction text only. This walkthrough shows that it is well formed and wired in. It does not show that an agent following it gives correct hook mappings.</p></li><li><p>Task-1 and task-2 statements are read from the committed task files. I did not re-verify them, for example the 49 links and three PDF routes.</p></li><li><p>Scope covers committed content only; uncommitted working-tree content is not included.</p></li></ul></section>
+<details id="changes"><summary>Changed files</summary><ul><li><a href="https://github.com/16S893-AI-for-engineering-research/gmao0601/blob/3bacf190a9a431cd89c3f484a60c13ff6c0c9b54/.pi/skills/equations-to-hooks/SKILL.md#L1-L92" rel="noreferrer">.pi/skills/equations-to-hooks/SKILL.md</a> <span class="secondary">1-92</span><p>New skill: clarify, research, map, report, approve. No plugin generation and no runtime claims.</p><a href="#r2">Change evidence<small class="record-id">r2</small></a></li><li><a href="https://github.com/16S893-AI-for-engineering-research/gmao0601/blob/3bacf190a9a431cd89c3f484a60c13ff6c0c9b54/AGENTS.md#L26-L29" rel="noreferrer">AGENTS.md</a> <span class="secondary">26-29</span><p>Adds a pointer to .pi/ref-library/MAP.md for US3D reference questions.</p><a href="#r2">Change evidence<small class="record-id">r2</small></a></li><li><a href="https://github.com/16S893-AI-for-engineering-research/gmao0601/blob/3bacf190a9a431cd89c3f484a60c13ff6c0c9b54/.gitignore" rel="noreferrer">.gitignore</a><p>Ignores .pi/ref-library/* except MAP.md, so only the map is versioned.</p><a href="#r2">Change evidence<small class="record-id">r2</small></a></li><li><a href="https://github.com/16S893-AI-for-engineering-research/gmao0601/blob/3bacf190a9a431cd89c3f484a60c13ff6c0c9b54/backlog/tasks/task-2%20-%20Build-reusable-equations-to-hooks-capability.md" rel="noreferrer">backlog/tasks/task-2 - Build-reusable-equations-to-hooks-capability.md</a><p>Status In Progress, plus a simplified single-file plan and notes.</p><a href="#r3">Change evidence<small class="record-id">r3</small></a></li><li><a href="https://github.com/16S893-AI-for-engineering-research/gmao0601/blob/3bacf190a9a431cd89c3f484a60c13ff6c0c9b54/backlog/tasks/task-1%20-%20Inventory-US3D-manuals-and-example-case-artifacts.md" rel="noreferrer">backlog/tasks/task-1 - Inventory-US3D-manuals-and-example-case-artifacts.md</a><p>Re-scoped to a library map and marked Done, with all acceptance criteria checked.</p><a href="#r3">Change evidence<small class="record-id">r3</small></a></li></ul></details><details id="references"><summary>References</summary><ul><li id="ref-skill-commit"><a href="https://github.com/16S893-AI-for-engineering-research/gmao0601/commit/3bacf190a9a431cd89c3f484a60c13ff6c0c9b54" rel="noreferrer">the change that adds the equations-to-hooks skill</a><br><span class="secondary">3bacf190a9a431cd89c3f484a60c13ff6c0c9b54</span> <a href="#r2">Where it was read<small class="record-id">r2</small></a></li></ul></details><details id="scope"><summary>Scope and commits</summary><p>Last code-changing commit: initial skill for task 2 · committed content</p><dl><dt>Head commit</dt><dd>3bacf190a9a431cd89c3f484a60c13ff6c0c9b54</dd></dl><ul><li><a href="https://github.com/16S893-AI-for-engineering-research/gmao0601/commit/3bacf190a9a431cd89c3f484a60c13ff6c0c9b54" rel="noreferrer">initial skill for task 2</a><br><small>3bacf190a9a431cd89c3f484a60c13ff6c0c9b54</small></li></ul></details><details id="log"><summary>Exact command log · 8 records</summary><p class="log-tools"><button type="button" data-records="open">Expand all</button><button type="button" data-records="close">Collapse all</button></p><details class="record" id="r0"><summary>Working tree before the walkthrough (taken by the tool, not the agent) <span class="secondary">— exit 0<small class="record-id">r0</small></span></summary><section class="output"><h4>Stdout</h4><pre><code> M &quot;backlog/tasks/task-2 - Build-reusable-equations-to-hooks-capability.md&quot;
+?? reports/task-2/lorentz-force-mapping.json
+?? reports/task-2/lorentz-force-mapping.md
+</code></pre></section><h4 class="with-tool">Exact command <button type="button" class="copy" data-copy="cmd-r0">Copy</button></h4><pre id="cmd-r0"><code>git status --porcelain --untracked-files=all -- . &#39;:(exclude).walkthrough&#39;</code></pre><h4>Technical metadata</h4><dl><dt>Working directory</dt><dd>/Users/grace/Documents/GradSchool/sandboxPi/gmao0601</dd><dt>Started</dt><dd>2026-11-17T03:22:09.793Z</dd><dt>Duration (ms)</dt><dd>77</dd><dt>Execution status</dt><dd>exit 0</dd><dt>Snapshot</dt><dd>before</dd></dl><details><summary>Recorded tree snapshot</summary><pre><code>{
+  &quot;backlog/tasks/task-2 - Build-reusable-equations-to-hooks-capability.md&quot;: &quot;26d3fac4c30be8f006663ac2ad1d2d6d8ab7afee84431d44d2e38065c3b0fc72&quot;,
+  &quot;reports/task-2/lorentz-force-mapping.json&quot;: &quot;5b7e037aed2c0f1aecea34ebff3d9a33168ceb4350f401ad0d6962412a8e8f69&quot;,
+  &quot;reports/task-2/lorentz-force-mapping.md&quot;: &quot;747ec261f72fde11f1d90222ee419ca9363f9c7d9a403389de0dd05e2e49ff36&quot;,
+  &quot;.github/&quot;: &quot;directory&quot;,
+  &quot;.pi/&quot;: &quot;directory&quot;,
+  &quot;.pytest_cache/&quot;: &quot;directory&quot;,
+  &quot;abandoned_skills/&quot;: &quot;directory&quot;,
+  &quot;assignment2/&quot;: &quot;directory&quot;,
+  &quot;backlog/&quot;: &quot;directory&quot;,
+  &quot;backlog_archive/&quot;: &quot;directory&quot;,
+  &quot;img/&quot;: &quot;directory&quot;,
+  &quot;nono/&quot;: &quot;directory&quot;,
+  &quot;reports/&quot;: &quot;directory&quot;,
+  &quot;skills_test_files/&quot;: &quot;directory&quot;,
+  &quot;trying_out_skills/&quot;: &quot;directory&quot;
+}</code></pre></details></details><details class="record" id="r1"><summary>Find recent commits and which touched code rather than only the devlog <span class="secondary">— exit 0<small class="record-id">r1</small></span></summary><section class="output"><h4>Stdout</h4><pre><code>--- 62da939 devlog update
+
+ devlog.html | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+--- 3bacf19 initial skill for task 2
+
+ .gitignore                                         |  5 +-
+ .pi/skills/equations-to-hooks/SKILL.md             | 92 ++++++++++++++++++++++
+ AGENTS.md                                          |  4 +
+ ...tory-US3D-manuals-and-example-case-artifacts.md | 66 +++++++++++++---
+ ...Build-reusable-equations-to-hooks-capability.md | 30 ++++++-
+ 5 files changed, 183 insertions(+), 14 deletions(-)
+--- d065254 task 1 complete
+
+ .pi/ref-library/MAP.md | 89 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 89 insertions(+)
+--- e119f88 new plan + dev log update
+
+ ...t-\342\200\224-agreed-plan-and-decision-log.md&quot; | 150 ++++++++++++++++++
+ ...fter-validation-\342\200\224-deferred-scope.md&quot; |  27 ++++
+ ...tory-US3D-manuals-and-example-case-artifacts.md |  31 ++++
+ ...ify-plugin-runs-with-custom-equations-active.md |  27 ++++
+ ...-Hartmann-flow-validation-across-three-cases.md |  27 ++++
+ ...1.1 - Validate-weak-field-Hartmann-flow-case.md |  29 ++++
+ ...- Validate-moderate-field-Hartmann-flow-case.md |  28 ++++
+ ...- Validate-stronger-field-Hartmann-flow-case.md |  28 ++++
+ ...Build-reusable-equations-to-hooks-capability.md |  30 ++++
+ ...reusable-hooks-to-plugin-skeleton-capability.md |  30 ++++
+ ...reusable-template-based-US3D-input-generator.md |  30 ++++
+ ...d-reusable-Slurm-submission-script-generator.md |  29 ++++
+ ...oks-leave-all-existing-CFD-outputs-unchanged.md |  30 ++++
+ ...diffusion-model-without-activating-equations.md |  28 ++++
+ ...-initialization-leaves-CFD-outputs-unchanged.md |  27 ++++
+ ...mplement-supplied-custom-diffusion-equations.md |  28 ++++
+ devlog.html                                        |  16 ++
+ img/generate_new_workflow.swift                    | 168 +++++++++++++++++++++
+ img/new_workflow.png                               | Bin 0 -&gt; 616507 bytes
+ style.css                                          |   2 +-
+ 20 files changed, 764 insertions(+), 1 deletion(-)
+--- 37f00ac AGENTS.md mod
+
+ AGENTS.md | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+--- c6c4ef5 file cleanup
+
+ .../equation-to-requirements/SKILL.md                     |  0
+ .../hook-capability-mapping/SKILL.md                      |  0
+ .../hook-report-review/SKILL.md                           |  0
+ backlog/config.yml                                        |  2 +-
+ V1.1.md =&gt; backlog_archive/V1.1.md                        |  0
+ ...ge-conserving-electric-potential-and-current-solver.md |  0
+ ...rentz-force-and-electromagnetic-energy-to-US3D-flow.md |  0
+ ...nductivity-with-US3D-plasma-chemistry-and-transport.md |  0
+ backlog_archive/backlog/config.yml                        | 15 +++++++++++++++
+ ...D-plasma-and-MHD-plugin-for-magnetic-window-studies.md |  0
+ ...-capabilities-and-establish-a-reproducible-baseline.md |  0
+ ...ndow-hypersonic-demonstration-and-sensitivity-study.md |  0
+ ...- Document-test-and-prepare-US3D-MHD-plugin-release.md |  0
+ ...2 - Create-plugin-writing-reference-guide-and-skill.md |  0
+ ...Create-input-file-writing-reference-guide-and-skill.md |  0
+ .../task-1.14 - Describe-the-target-simulation-problem.md |  0
+ ...-initialized-plugin-leaves-the-simulation-unchanged.md |  0
+ ...tivity-of-the-hypersonic-results-deferred-breakdown.md |  0
+ ...asma-regime-and-approve-first-release-MHD-equations.md |  0
+ ... - Design-US3D-MHD-plugin-coupling-and-field-solver.md |  0
+ ... - Create-US3D-plugin-skeleton-and-no-op-regression.md |  0
+ ...mplement-independently-testable-MHD-physics-kernels.md |  0
+ ... - Verify-coupled-MHD-with-canonical-analytic-cases.md |  0
+ ... Build-evidence-backed-US3D-hook-selection-subagent.md |  0
+ ...ask-3 - Summarize-US3D-reference-manuals-by-chapter.md |  0
+ 25 files changed, 16 insertions(+), 1 deletion(-)
+ M &quot;backlog/tasks/task-2 - Build-reusable-equations-to-hooks-capability.md&quot;
+?? reports/
+</code></pre></section><h4 class="with-tool">Exact command <button type="button" class="copy" data-copy="cmd-r1">Copy</button></h4><pre id="cmd-r1"><code>git log --stat --format=&#39;--- %h %s&#39; -6 -- . &#39;:!archived-plans&#39; &#39;:!retired-skills&#39; | head -80; git status --short | head</code></pre><h4>Technical metadata</h4><dl><dt>Working directory</dt><dd>/Users/grace/Documents/GradSchool/sandboxPi/gmao0601</dd><dt>Started</dt><dd>2026-11-17T03:22:09.793Z</dd><dt>Duration (ms)</dt><dd>61</dd><dt>Execution status</dt><dd>exit 0</dd></dl></details><details class="record" id="r2"><summary>Read the skill and config diff of the commit <span class="secondary">— exit 0<small class="record-id">r2</small></span></summary><section class="output"><h4>Stdout</h4><p class="diff-key"><span class="d-add">+99 added</span> <span class="d-del">−2 removed</span></p><pre class="diff"><code>3bacf190a9a431cd89c3f484a60c13ff6c0c9b54
+initial skill for task 2
+Wed Nov 4 14:22:39 2026 -0500
+
+<span class="d-file">diff --git a/.gitignore b/.gitignore
+</span><span class="d-file">index a45a3c7..374a154 100644
+</span><span class="d-file">--- a/.gitignore
+</span><span class="d-file">+++ b/.gitignore
+</span><span class="d-hunk">@@ -20,5 +20,6 @@ venv/
+</span> # Logs
+ *.log
+ 
+<span class="d-del">-# Reference library (agent-only skills)
+</span><span class="d-del">-.pi/ref-library/
+</span><span class="d-add">+# Keep supplied reference materials local; version the navigation map only.
+</span><span class="d-add">+.pi/ref-library/*
+</span><span class="d-add">+!.pi/ref-library/MAP.md
+</span><span class="d-file">diff --git a/.pi/skills/equations-to-hooks/SKILL.md b/.pi/skills/equations-to-hooks/SKILL.md
+</span><span class="d-file">new file mode 100644
+</span><span class="d-file">index 0000000..55bcbbb
+</span><span class="d-file">--- /dev/null
+</span><span class="d-file">+++ b/.pi/skills/equations-to-hooks/SKILL.md
+</span><span class="d-hunk">@@ -0,0 +1,92 @@
+</span><span class="d-add">+---
+</span><span class="d-add">+name: equations-to-hooks
+</span><span class="d-add">+description: Map symbolic equations and variable definitions to documented US3D hooks, including supporting data and initialization requirements. Use when selecting integration points for user-supplied equations. Ask targeted clarification questions and present a documented mapping for user approval; do not generate plugins or claim runtime verification.
+</span><span class="d-add">+---
+</span><span class="d-add">+
+</span><span class="d-add">+# Equations to US3D hooks
+</span><span class="d-add">+
+</span><span class="d-add">+**Symbolic equations + variable definitions → targeted clarification → documented mapping → user approval.**
+</span><span class="d-add">+
+</span><span class="d-add">+## Input
+</span><span class="d-add">+
+</span><span class="d-add">+Accept symbolic equations (plain text or LaTeX) and variable definitions directly in chat or from a user-provided file. Do not require a paper, source location, structured form or separate model-specification document.
+</span><span class="d-add">+
+</span><span class="d-add">+Example:
+</span><span class="d-add">+
+</span><span class="d-add">+```text
+</span><span class="d-add">+J = -D ∇φ
+</span><span class="d-add">+J: diffusive flux vector [kg/(m² s)]
+</span><span class="d-add">+D: constant scalar diffusivity [m²/s]
+</span><span class="d-add">+φ: scalar concentration [kg/m³]
+</span><span class="d-add">+∇: spatial gradient [1/m]
+</span><span class="d-add">+```
+</span><span class="d-add">+
+</span><span class="d-add">+Preserve the user&#39;s expressions and definitions. Do not derive missing physics, change equations or silently assume conventions.
+</span><span class="d-add">+
+</span><span class="d-add">+## Workflow
+</span><span class="d-add">+
+</span><span class="d-add">+### 1. Clarify only what is needed
+</span><span class="d-add">+
+</span><span class="d-add">+Read the supplied equations and definitions first. Ask focused questions only where missing or ambiguous information affects the mapping. For the example above:
+</span><span class="d-add">+
+</span><span class="d-add">+- Which governing equation receives this flux?
+</span><span class="d-add">+- Is φ an existing US3D field or a new unknown?
+</span><span class="d-add">+- Does this add to or replace existing diffusion?
+</span><span class="d-add">+
+</span><span class="d-add">+Ask about units, scalar/vector/tensor types, sign conventions, initial/boundary conditions or coefficient dependence only when needed. Do not repeat questions already answered.
+</span><span class="d-add">+
+</span><span class="d-add">+Confirm the target US3D version. If only a manual version is available, offer a documentation-only mapping against that version; do not assume the installed solver matches it.
+</span><span class="d-add">+
+</span><span class="d-add">+### 2. Research the documented interfaces
+</span><span class="d-add">+
+</span><span class="d-add">+Start at `.pi/ref-library/MAP.md` in the project. Use its topic/chapter summaries to locate relevant material, then verify interface claims against the original manual pages. If the reference library is unavailable, request it rather than inventing interfaces.
+</span><span class="d-add">+
+</span><span class="d-add">+Verify hook names, full signatures, invocation timing and data availability. Cite the original manual filename, version, section and physical one-based PDF page. Summaries alone are not sufficient evidence for exact interfaces. Preserve source conflicts or unclear signatures as unresolved questions.
+</span><span class="d-add">+
+</span><span class="d-add">+A search miss means unverified, not necessarily unsupported. A storage-registration mechanism or flux hook alone does not establish support for an arbitrary new governing equation.
+</span><span class="d-add">+
+</span><span class="d-add">+### 3. Map equations and supporting operations
+</span><span class="d-add">+
+</span><span class="d-add">+Assign stable equation and mapping IDs, such as `eq-001` and `map-001`. Retain them when revising the same items.
+</span><span class="d-add">+
+</span><span class="d-add">+Include both equation terms and necessary supporting operations, such as parameter initialization, storage, gradients, boundary handling or restart requirements. Stay within the user&#39;s requested model; do not design additional physics.
+</span><span class="d-add">+
+</span><span class="d-add">+For each mapping entry, record:
+</span><span class="d-add">+
+</span><span class="d-add">+- Equation ID or supporting operation and its purpose.
+</span><span class="d-add">+- Documented hook name and signature.
+</span><span class="d-add">+- Invocation timing.
+</span><span class="d-add">+- Required data, its availability and read/write behavior.
+</span><span class="d-add">+- Whether the operation adds to, replaces or only reads existing behavior.
+</span><span class="d-add">+- Original-manual citations and the reasoning connecting the interface to the operation.
+</span><span class="d-add">+- Supported, unresolved or documented-unsupported status, with outstanding questions.
+</span><span class="d-add">+
+</span><span class="d-add">+Leave unknown fields explicitly unresolved rather than guessing. Use “unsupported” only when documentation affirmatively contradicts the requested operation; explain the specific limitation.
+</span><span class="d-add">+
+</span><span class="d-add">+### 4. Present the mapping for review
+</span><span class="d-add">+
+</span><span class="d-add">+Produce a readable Markdown report and a corresponding JSON mapping with the same IDs, findings, citations and questions. No helper scripts or formal schema are required. Check their consistency before presenting them. Confirm the destination before saving files, and do not silently overwrite previous reports.
+</span><span class="d-add">+
+</span><span class="d-add">+Separate supported findings, unconfirmed assumptions, unresolved questions and approval status. State the target documentation version and any unknown installation compatibility.
+</span><span class="d-add">+
+</span><span class="d-add">+For the example input, if φ is a new scalar whose evolution/storage support has not been established, the result should include separate unresolved entries for the flux and supporting storage/initialization. Ask for the missing governing-equation context; do not assign a guessed hook.
+</span><span class="d-add">+
+</span><span class="d-add">+### 5. Obtain explicit approval
+</span><span class="d-add">+
+</span><span class="d-add">+Treat every new or changed mapping as unapproved. Present the current mapping and resolve blocking questions before requesting explicit user approval for downstream skeleton work. Approval of this skill is not approval of a generated mapping.
+</span><span class="d-add">+
+</span><span class="d-add">+Record which mapping revision the user approved. Changes to its equations, interfaces or supporting requirements require renewed approval. Do not proceed to skeleton generation without approval of the relevant mapping.
+</span><span class="d-add">+
+</span><span class="d-add">+## Boundaries
+</span><span class="d-add">+
+</span><span class="d-add">+This skill selects and explains integration points. It does not generate plugins, build code, run US3D or verify CFD results. Documentation-backed conclusions and local report checks are not runtime verification.
+</span><span class="d-add">+
+</span><span class="d-add">+## Usage
+</span><span class="d-add">+
+</span><span class="d-add">+After adding or changing this skill, run `/reload` in Pi, then invoke:
+</span><span class="d-add">+
+</span><span class="d-add">+```text
+</span><span class="d-add">+/skill:equations-to-hooks J = -D ∇φ; J is a diffusive flux vector, D is constant scalar diffusivity, and φ is scalar concentration.
+</span><span class="d-add">+```
+</span><span class="d-add">+
+</span><span class="d-add">+Or provide equations and definitions in ordinary chat and ask to map them to US3D hooks.
+</span><span class="d-file">diff --git a/AGENTS.md b/AGENTS.md
+</span><span class="d-file">index 932ec57..1049782 100644
+</span><span class="d-file">--- a/AGENTS.md
+</span><span class="d-file">+++ b/AGENTS.md
+</span><span class="d-hunk">@@ -23,6 +23,10 @@ Do not edit Backlog task, draft, document, decision, or milestone markdown files
+</span> &lt;/CRITICAL_INSTRUCTION&gt;
+ &lt;!-- BACKLOG.MD GUIDELINES END --&gt;
+ 
+<span class="d-add">+## US3D reference navigation
+</span><span class="d-add">+
+</span><span class="d-add">+For US3D documentation or supplied example-case questions, start at [`.pi/ref-library/MAP.md`](.pi/ref-library/MAP.md). It links existing topic/chapter indexes, explains source authority, and records artifact availability and unresolved environment questions. Use it as reference navigation, not as a task plan.
+</span><span class="d-add">+
+</span> ## Active working scope
+ 
+ - `backlog/` is the only authoritative task plan for this workspace.
+</code></pre></section><h4 class="with-tool">Exact command <button type="button" class="copy" data-copy="cmd-r2">Copy</button></h4><pre id="cmd-r2"><code>git show 3bacf19 --format=&#39;%H%n%s%n%ad&#39; -- .gitignore AGENTS.md .pi/skills/equations-to-hooks/SKILL.md</code></pre><h4>Technical metadata</h4><dl><dt>Working directory</dt><dd>/Users/grace/Documents/GradSchool/sandboxPi/gmao0601</dd><dt>Started</dt><dd>2026-11-17T03:22:14.119Z</dd><dt>Duration (ms)</dt><dd>43</dd><dt>Execution status</dt><dd>exit 0</dd></dl></details><details class="record" id="r3"><summary>Read the task-file changes and check the working tree state <span class="secondary">— exit 0 · truncated output<small class="record-id">r3</small></span></summary><section class="output"><h4>Stdout</h4><p class="warning">Truncated: 1292 bytes omitted from stdout. This is not the complete output.</p><p class="diff-key"><span class="d-add">+70 added</span> <span class="d-del">−12 removed</span></p><pre class="diff"><code><span class="d-file">--- a/backlog/tasks/task-1 - Inventory-US3D-manuals-and-example-case-artifacts.md	
+</span><span class="d-file">+++ b/backlog/tasks/task-1 - Inventory-US3D-manuals-and-example-case-artifacts.md	
+</span><span class="d-del">-title: Inventory US3D manuals and example case artifacts
+</span><span class="d-del">-status: To Do
+</span><span class="d-del">-assignee: []
+</span><span class="d-add">+title: Map the US3D reference library for future agents
+</span><span class="d-add">+status: Done
+</span><span class="d-add">+assignee:
+</span><span class="d-add">+  - &#39;@assistant&#39;
+</span><span class="d-add">+updated_date: &#39;2026-11-04 18:57&#39;
+</span><span class="d-add">+  - .pi/ref-library/MAP.md
+</span><span class="d-del">-Establish a reliable starting point for future agents using the supplied US3D reference library and example case. Inventory the supplied artifacts as-is; missing assets and unresolved environment questions do not have to be resolved to complete this task. Reu
+</span><span class="d-add">+Create a concise, discoverable map of .pi/ref-library so future agents can quickly understand what is available, where to start for a particular question, which sources are authoritative, and what remains unknown. Reuse and link existing topic/chapter indexes
+</span><span class="d-add">+
+</span><span class="d-add">+The deliverable is a reference map, not a skill. Add a brief project-instructions pointer so future agents can discover it. Preserve existing reference files. Excludes skill creation, helper tooling, plugin implementation, case redesign, and consulting archiv
+</span><span class="d-del">-- [ ] #1 A concise reference inventory records manual paths, documented versions, and source hierarchy; summaries are navigation aids and exact API/syntax claims cite original manual sections/pages.
+</span><span class="d-del">-- [ ] #2 A topic lookup covers hooks, plugins, user variables, initialization, diffusion/transport, input syntax, build/load procedures, and output extraction; topics not located are explicitly unresolved.
+</span><span class="d-del">-- [ ] #3 input.inp, example_submit.sh, and post.scr are inspected, with their roles and referenced case files recorded.
+</span><span class="d-del">-- [ ] #4 The artifact manifest distinguishes files available locally, files unavailable locally, and unconfirmed remote availability.
+</span><span class="d-del">-- [ ] #5 Questions requiring user confirmation are recorded, including installed US3D version and the example discrepancy between 384 requested Slurm tasks and four launched MPI processes; examples are not silently corrected.
+</span><span class="d-del">-- [ ] #6 Original reference files are unchanged.
+</span><span class="d-add">+- [x] #1 A concise map at .pi/ref-library/MAP.md explains the library layout, manual paths, documented versions, and source hierarchy; it links existing indexes instead of duplicating manual summaries, and exact API/syntax claims cite original manual sections
+</span><span class="d-add">+- [x] #2 The map routes agents to hooks, plugins, user variables, initialization, diffusion/transport, input syntax, build/load procedures, and output extraction through existing guides or targeted chapter links; topics not located are explicitly unresolved.
+</span><span class="d-add">+- [x] #3 input.inp, example_submit.sh, and post.scr are inspected, with their roles and referenced case files recorded.
+</span><span class="d-add">+- [x] #4 The artifact inventory distinguishes files available locally, files not found within a stated local search scope, and unconfirmed remote availability; required inputs are distinguished from generated outputs.
+</span><span class="d-add">+- [x] #5 Questions requiring user confirmation are recorded, including installed US3D version and the discrepancy between 384 requested Slurm tasks and four launched MPI processes; examples are not silently corrected.
+</span><span class="d-add">+- [x] #6 All pre-existing reference-library files remain unchanged.
+</span><span class="d-add">+- [x] #7 A brief pointer in the project AGENTS.md directs future agents to the map for US3D reference questions; the map is usable without a custom skill.
+</span><span class="d-add">+- [x] #8 Local map links are checked and representative hook, input-syntax, and output-extraction navigation paths are exercised; checks distinguish navigation from technical source verification and runtime validation.
+</span><span class="d-add">+
+</span><span class="d-add">+## Implementation Plan
+</span><span class="d-add">+
+</span><span class="d-add">+&lt;!-- SECTION:PLAN:BEGIN --&gt;
+</span><span class="d-add">+1. Reuse the completed read-only inspection and preservation baseline; inspect any remaining relevant index sections without consulting excluded historical material.
+</span><span class="d-add">+2. Write .pi/ref-library/MAP.md as a concise entry point: library layout/source hierarchy, question-to-reference routing, example-artifact inventory, and open questions. Link existing guides instead of repr
+</span>[... 1292 bytes cut by walkthrough_record ...]
+
+<span class="d-add">+
+</span><span class="d-add">+Preservation baseline: .pi/ref-library contains 120 regular files excluding .DS_Store. Aggregate SHA256 a7eeeaf70c7277b333d9fe7731e782d125e236bb973f5d8ad3e4efb184997647, computed from lexicographically path-sorted UTF-8 lines formatted SHA256(file bytes), two
+</span><span class="d-add">+
+</span><span class="d-add">+User clarified the desired outcome: a map of the reference library that future agents can find and understand quickly, rather than a skill. This supersedes the earlier skill scope and outline; no skill or inventory file had been created. Task scope, acceptanc
+</span><span class="d-add">+
+</span><span class="d-add">+Implemented .pi/ref-library/MAP.md and the AGENTS.md discovery pointer. Map contains quick-start navigation, source hierarchy/version/page conventions, compact topic routing, direct example observations, scoped availability snapshot, and unresolved environmen
+</span><span class="d-add">+
+</span><span class="d-add">+Verification: 49 local links/anchors in MAP.md and AGENTS.md resolve. Manually exercised three routes through the relevant summaries to original PDF text using pdftotext: hook us3dh_init at Developer PDF p.110; input CFD_SOLVER at User PDF p.25; output pob_wr
+</span><span class="d-add">+
+</span><span class="d-add">+Implementation ready for user review; leaving status In Progress per the agreed review-before-closure checkpoint.
+</span><span class="d-add">+
+</span><span class="d-add">+User reviewed and approved the map and explicitly authorized completing Task 1.
+</span><span class="d-add">+&lt;!-- SECTION:NOTES:END --&gt;
+</span><span class="d-add">+
+</span><span class="d-add">+## Final Summary
+</span><span class="d-add">+
+</span><span class="d-add">+&lt;!-- SECTION:FINAL_SUMMARY:BEGIN --&gt;
+</span><span class="d-add">+Created .pi/ref-library/MAP.md with source hierarchy, topic navigation, example-artifact availability, and unresolved environment questions. Added the AGENTS.md discovery pointer and a narrow .gitignore exception for the map. Verified 49 local links/anchors, 
+</span><span class="d-add">+&lt;!-- SECTION:FINAL_SUMMARY:END --&gt;
+</span><span class="d-file">--- a/backlog/tasks/task-2 - Build-reusable-equations-to-hooks-capability.md	
+</span><span class="d-file">+++ b/backlog/tasks/task-2 - Build-reusable-equations-to-hooks-capability.md	
+</span><span class="d-del">-status: To Do
+</span><span class="d-del">-assignee: []
+</span><span class="d-add">+status: In Progress
+</span><span class="d-add">+assignee:
+</span><span class="d-add">+  - &#39;@pi&#39;
+</span><span class="d-add">+updated_date: &#39;2026-11-04 19:20&#39;
+</span><span class="d-add">+
+</span><span class="d-add">+## Implementation Plan
+</span><span class="d-add">+
+</span><span class="d-add">+&lt;!-- SECTION:PLAN:BEGIN --&gt;
+</span><span class="d-add">+1. Per user direction, keep the implementation to one self-contained .pi/skills/equations-to-hooks/SKILL.md for now. This replaces the earlier multi-file implementation plan.
+</span><span class="d-add">+2. Remove the added helper scripts, tests, fixtures, reference contract and generated Python caches.
+</span><span class="d-add">+3. Keep concise skill instructions for symbolic equations and variable definitions, targeted clarification, original-manual-backed mapping, and explicit user approval before downstream skeleton work. No mandatory input form or source-location requirement.
+</span><span class="d-add">+4. Describe readable and structured mapping outputs within the skill without adding a schema, renderer, validator or automated approval machinery.
+</span><span class="d-add">+5. Check that only SKILL.md remains and that it has no references to removed files. Keep TASK-2 open; broader acceptance verification is deferred.
+</span><span class="d-add">+&lt;!-- SECTION:PLAN:END --&gt;
+</span><span class="d-add">+
+</span><span class="d-add">+## Implementation Notes
+</span><span class="d-add">+
+</span><span class="d-add">+&lt;!-- SECTION:NOTES:BEGIN --&gt;
+</span><span class="d-add">+User selected skill packaging. Interface proposal and implementation plan are being prepared; implementation remains gated on interface approval.
+</span><span class="d-add">+
+</span><span class="d-add">+Reviewed Pi skill documentation, an existing project skill layout, and the reference-library map. Manuals document 1.2.1; installed version remains unconfirmed. Interface proposal recorded in the plan for user approval. No skill implementation files created.
+</span><span class="d-add">+
+</span><span class="d-add">+User simplified the proposed input to symbolic equations and variable definitions. Awaiting approval to implement the revised interface; no skill files created.
+</span><span class="d-add">+
+</span><span class="d-add">+User approved the revised simple-input workflow: symbolic equations and variable definitions, targeted clarification, documented mapping, explicit mapping approval. Implementation authorized; packaging is a project skill with bundled Python standard-library r
+</span><span class="d-add">+
+</span><span class="d-add">+Simplified at user request to a single self-contained SKILL.md. Removed the added scripts, tests, JSON fixtures, examples README, reference contract and Python caches. Removed automated digest/gate machinery. Only SKILL.md remains; checked that it has no refe
+</span><span class="d-add">+&lt;!-- SECTION:NOTES:END --&gt;
+</span> M &quot;backlog/tasks/task-2 - Build-reusable-equations-to-hooks-capability.md&quot;
+?? reports/
+task-2
+</code></pre></section><h4 class="with-tool">Exact command <button type="button" class="copy" data-copy="cmd-r3">Copy</button></h4><pre id="cmd-r3"><code>git show 3bacf19 -- backlog/ | grep -E &#39;^(\+|-)&#39; | cut -c1-260 | head -120; git status --short; ls reports | head</code></pre><h4>Technical metadata</h4><dl><dt>Working directory</dt><dd>/Users/grace/Documents/GradSchool/sandboxPi/gmao0601</dd><dt>Started</dt><dd>2026-11-17T03:22:14.164Z</dd><dt>Duration (ms)</dt><dd>41</dd><dt>Execution status</dt><dd>exit 0</dd></dl></details><details class="record" id="r4"><summary>Check skill packaging, front matter, ignore rules and leftovers <span class="secondary">— exit 0<small class="record-id">r4</small></span></summary><section class="output"><h4>Stdout</h4><pre><code>== skill dir at commit
+.pi/skills/equations-to-hooks/SKILL.md
+.pi/skills/new-figure-plot/SKILL.md
+.pi/skills/recreate-scientific-figure/SKILL.md
+.pi/skills/tdd/SKILL.md
+== frontmatter
+---
+name: equations-to-hooks
+description: Map symbolic equations and variable definitions to documented US3D hooks, including supporting data and ini
+---
+name equations-to-hooks | dir match True | desc chars 343
+== ignore rules
+MAP.md: not ignored
+other file: chapters
+.gitignore:24:.pi/ref-library/*	.pi/ref-library/chapters
+== tracked in ref-library
+.pi/ref-library/MAP.md
+== MAP.md present
+-rw-r--r--  1 grace  staff  10280 Nov  4 13:56 .pi/ref-library/MAP.md
+== removed helper files absent
+assignment2/tests/test_recreate_plot.py
+== skill unchanged since commit?
+done
+== task-2 working tree diff
+ .../tasks/task-2 - Build-reusable-equations-to-hooks-capability.md  | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+</code></pre></section><h4 class="with-tool">Exact command <button type="button" class="copy" data-copy="cmd-r4">Copy</button></h4><pre id="cmd-r4"><code>cd /Users/grace/Documents/GradSchool/sandboxPi/gmao0601
+echo &quot;== skill dir at commit&quot;; git ls-tree -r --name-only 3bacf19 -- .pi/skills
+echo &quot;== frontmatter&quot;; sed -n &#39;1,4p&#39; .pi/skills/equations-to-hooks/SKILL.md | cut -c1-120
+python3 - &lt;&lt;&#39;E&#39;
+import re
+t=open(&#39;.pi/skills/equations-to-hooks/SKILL.md&#39;).read()
+m=re.match(r&#39;---\nname: (.+)\ndescription: (.+)\n---&#39;,t)
+print(&#39;name&#39;,m.group(1),&#39;| dir match&#39;, m.group(1)==&#39;equations-to-hooks&#39;,&#39;| desc chars&#39;,len(m.group(2)))
+E
+echo &quot;== ignore rules&quot;; git check-ignore -v .pi/ref-library/MAP.md || echo &quot;MAP.md: not ignored&quot;
+f=$(ls .pi/ref-library | grep -v MAP.md | head -1); echo &quot;other file: $f&quot;; git check-ignore -v &quot;.pi/ref-library/$f&quot;
+echo &quot;== tracked in ref-library&quot;; git ls-files .pi/ref-library | head
+echo &quot;== MAP.md present&quot;; ls -l .pi/ref-library/MAP.md
+echo &quot;== removed helper files absent&quot;; git ls-tree -r --name-only 3bacf19 | grep -Ei &#39;scripts|fixtures|tests/|__pycache__&#39; || echo none
+echo &quot;== skill unchanged since commit?&quot;; git diff --stat 3bacf19 HEAD -- .pi/skills AGENTS.md .gitignore; echo done
+echo &quot;== task-2 working tree diff&quot;; git diff --stat</code></pre><h4>Technical metadata</h4><dl><dt>Working directory</dt><dd>/Users/grace/Documents/GradSchool/sandboxPi/gmao0601</dd><dt>Started</dt><dd>2026-11-17T03:22:24.703Z</dd><dt>Duration (ms)</dt><dd>354</dd><dt>Execution status</dt><dd>exit 0</dd></dl></details><details class="record" id="r5"><summary>Check the skill&#39;s MAP pointer resolves and local links work <span class="secondary">— exit 0<small class="record-id">r5</small></span></summary><section class="output"><h4>Stdout</h4><pre><code>.pi/skills/equations-to-hooks/SKILL.md:42:Start at `.pi/ref-library/MAP.md` in the project. Use its topic/chapter summaries to locate releva
+AGENTS.md:28:For US3D documentation or supplied example-case questions, start at [`.pi/ref-library/MAP.md`](.pi/ref-library/MAP.md). It link
+== MAP anchors/links check
+AGENTS.md links 1 missing []
+.pi/ref-library/MAP.md links 47 missing []
+== MD headings used by skill
+6:# Equations to US3D hooks
+10:## Input
+26:## Workflow
+28:### 1. Clarify only what is needed
+40:### 2. Research the documented interfaces
+48:### 3. Map equations and supporting operations
+66:### 4. Present the mapping for review
+74:### 5. Obtain explicit approval
+80:## Boundaries
+84:## Usage
+</code></pre></section><h4 class="with-tool">Exact command <button type="button" class="copy" data-copy="cmd-r5">Copy</button></h4><pre id="cmd-r5"><code>cd /Users/grace/Documents/GradSchool/sandboxPi/gmao0601
+grep -n &#39;ref-library/MAP.md&#39; .pi/skills/equations-to-hooks/SKILL.md AGENTS.md | cut -c1-140
+echo &quot;== MAP anchors/links check&quot;; python3 - &lt;&lt;&#39;E&#39;
+import re,os
+for f in [&#39;AGENTS.md&#39;,&#39;.pi/ref-library/MAP.md&#39;]:
+    t=open(f).read(); base=os.path.dirname(f)
+    links=re.findall(r&#39;\]\(([^)#\s]+)(#[^)]*)?\)&#39;,t)
+    bad=[l for l,_ in links if not l.startswith(&#39;http&#39;) and not os.path.exists(os.path.join(base,l))]
+    print(f,&#39;links&#39;,len(links),&#39;missing&#39;,bad)
+E
+echo &quot;== MD headings used by skill&quot;; grep -n &#39;^#&#39; .pi/skills/equations-to-hooks/SKILL.md</code></pre><h4>Technical metadata</h4><dl><dt>Working directory</dt><dd>/Users/grace/Documents/GradSchool/sandboxPi/gmao0601</dd><dt>Started</dt><dd>2026-11-17T03:22:25.058Z</dd><dt>Duration (ms)</dt><dd>28</dd><dt>Execution status</dt><dd>exit 0</dd></dl></details><details class="record" id="r6"><summary>Check figure tooling and draw the skill&#39;s five-step workflow <span class="secondary">— exit 127<small class="record-id">r6</small></span></summary><section class="output"><h4>Stdout</h4><pre><code>missing font: IBM Plex Mono (brew install --cask font-stix font-ibm-plex-mono)
+/Users/grace/.pi/agent/npm/node_modules/show-not-tell/figkit/scripts/check-env.sh: line 10: kpsewhich: command not found
+missing TeX font: NewCMMath-Book.otf (tlmgr install newcomputermodern)
+</code></pre></section><section class="output"><h4>Stderr</h4><pre><code>/Users/grace/.pi/agent/npm/node_modules/show-not-tell/figkit/run.sh: line 5: exec: uv: not found
+</code></pre></section><h4 class="with-tool">Exact command <button type="button" class="copy" data-copy="cmd-r6">Copy</button></h4><pre id="cmd-r6"><code>mkdir -p .walkthrough/figs &amp;&amp; &quot;$WALKTHROUGH_FIGKIT/scripts/check-env.sh&quot; 2&gt;&amp;1 | tail -3
+cat &gt; .walkthrough/figs/skill-flow.py &lt;&lt;&#39;E&#39;
+from svgfig import Figure
+f = Figure()
+rows = [
+ (&quot;1 Clarify&quot;, [&quot;Ask only what changes&quot;, &quot;the mapping&quot;], 0),
+ (&quot;2 Research&quot;, [&quot;Start at MAP.md, then&quot;, &quot;verify in original manual&quot;], 1),
+ (&quot;3 Map&quot;, [&quot;Equation + supporting ops&quot;, &quot;to hook, timing, data&quot;], 0),
+ (&quot;4 Report&quot;, [&quot;Markdown + JSON,&quot;, &quot;same IDs and citations&quot;], 0),
+ (&quot;5 Approval&quot;, [&quot;User approves this&quot;, &quot;mapping revision&quot;], 2),
+]
+w = max(f.size(r[:2][1] and [r[0]]+r[1], r[2])[0] for r in rows)
+x0=20; y=20; gap=40; nodes=[]
+for i,(h,b,c) in enumerate(rows):
+    n=f.node(x0+ (w+gap)*(i%3) if i&lt;3 else x0+(w+gap)*(4-i), y if i&lt;3 else y+130, [h]+b, cat=c, w=w)
+    nodes.append(n)
+f.arrow(nodes[0].r,nodes[1].l); f.arrow(nodes[1].r,nodes[2].l)
+f.arrow(nodes[2].b,nodes[3].t)
+f.arrow(nodes[3].l,nodes[4].r)
+f.text(x0, y+270, &quot;Out of scope: generating plugins, building, running US3D.&quot;, &quot;small&quot;,&quot;muted&quot;)
+f.save(&quot;.walkthrough/figs/skill-flow.svg&quot;)
+E
+&quot;$WALKTHROUGH_FIGKIT/run.sh&quot; .walkthrough/figs/skill-flow.py</code></pre><h4>Technical metadata</h4><dl><dt>Working directory</dt><dd>/Users/grace/Documents/GradSchool/sandboxPi/gmao0601</dd><dt>Started</dt><dd>2026-11-17T03:22:32.592Z</dd><dt>Duration (ms)</dt><dd>2273</dd><dt>Execution status</dt><dd>exit 127</dd></dl><p class="secondary">Requested artifact: .walkthrough/figs/skill-flow.svg</p><p class="warning">Figure not captured: .walkthrough/figs/skill-flow.svg was not written</p></details><details class="record" id="r7"><summary>Working tree when walkthrough_write was called (taken by the tool, not the agent) <span class="secondary">— exit 0<small class="record-id">r7</small></span></summary><section class="output"><h4>Stdout</h4><pre><code> M &quot;backlog/tasks/task-2 - Build-reusable-equations-to-hooks-capability.md&quot;
+?? reports/task-2/lorentz-force-mapping.json
+?? reports/task-2/lorentz-force-mapping.md
+</code></pre></section><h4 class="with-tool">Exact command <button type="button" class="copy" data-copy="cmd-r7">Copy</button></h4><pre id="cmd-r7"><code>git status --porcelain --untracked-files=all -- . &#39;:(exclude).walkthrough&#39;</code></pre><h4>Technical metadata</h4><dl><dt>Working directory</dt><dd>/Users/grace/Documents/GradSchool/sandboxPi/gmao0601</dd><dt>Started</dt><dd>2026-11-17T03:22:57.270Z</dd><dt>Duration (ms)</dt><dd>84</dd><dt>Execution status</dt><dd>exit 0</dd><dt>Snapshot</dt><dd>after</dd></dl><details><summary>Recorded tree snapshot</summary><pre><code>{
+  &quot;backlog/tasks/task-2 - Build-reusable-equations-to-hooks-capability.md&quot;: &quot;26d3fac4c30be8f006663ac2ad1d2d6d8ab7afee84431d44d2e38065c3b0fc72&quot;,
+  &quot;reports/task-2/lorentz-force-mapping.json&quot;: &quot;5b7e037aed2c0f1aecea34ebff3d9a33168ceb4350f401ad0d6962412a8e8f69&quot;,
+  &quot;reports/task-2/lorentz-force-mapping.md&quot;: &quot;747ec261f72fde11f1d90222ee419ca9363f9c7d9a403389de0dd05e2e49ff36&quot;,
+  &quot;.github/&quot;: &quot;directory&quot;,
+  &quot;.pi/&quot;: &quot;directory&quot;,
+  &quot;.pytest_cache/&quot;: &quot;directory&quot;,
+  &quot;abandoned_skills/&quot;: &quot;directory&quot;,
+  &quot;assignment2/&quot;: &quot;directory&quot;,
+  &quot;backlog/&quot;: &quot;directory&quot;,
+  &quot;backlog_archive/&quot;: &quot;directory&quot;,
+  &quot;img/&quot;: &quot;directory&quot;,
+  &quot;nono/&quot;: &quot;directory&quot;,
+  &quot;reports/&quot;: &quot;directory&quot;,
+  &quot;skills_test_files/&quot;: &quot;directory&quot;,
+  &quot;trying_out_skills/&quot;: &quot;directory&quot;
+}</code></pre></details></details></details><details id="technical"><summary>Report metadata</summary><dl><dt>Repository</dt><dd>gmao0601</dd><dt>Branch</dt><dd>main</dd><dt>Commit</dt><dd>62da939</dd><dt>Working tree</dt><dd>uncommitted changes</dd><dt>Recorded on</dt><dd>2026-11-17 03:22</dd><dt>Model</dt><dd>MIT-parley/bedrock/claude-sonnet-5-5</dd><dt>Budget</dt><dd>20 commands (built-in default), 5 min total (built-in default)</dd><dt>Working directory</dt><dd>/Users/grace/Documents/GradSchool/sandboxPi/gmao0601</dd></dl><p>Working-tree comparison: checked; no changed paths detected.</p><a href="#r0">Before snapshot<small class="record-id">r0</small></a> <a href="#r7">After snapshot<small class="record-id">r7</small></a></details>
+</main><script>(() => {
+  function reveal() {
+    let id; try { id = decodeURIComponent(location.hash.slice(1)); } catch { return; }
+    if (!id) return;
+    const target = document.getElementById(id);
+    if (!target) return;
+    let node = target;
+    while (node) { if (node.tagName === 'DETAILS') node.open = true; node = node.parentElement; }
+    target.setAttribute('tabindex', '-1');
+    target.focus({ preventScroll: true });
+    target.scrollIntoView({ block: 'start' });
+  }
+  addEventListener('hashchange', reveal);
+  document.addEventListener('click', (event) => {
+    const button = event.target.closest && event.target.closest('button[data-records]');
+    if (!button) return;
+    const open = button.getAttribute('data-records') === 'open';
+    for (const record of document.querySelectorAll('#log details.record')) record.open = open;
+  });
+  document.addEventListener('click', async (event) => {
+    const button = event.target.closest && event.target.closest('button[data-copy]');
+    if (!button) return;
+    const source = document.getElementById(button.getAttribute('data-copy'));
+    if (!source) return;
+    const text = source.textContent;
+    try { await navigator.clipboard.writeText(text); }
+    catch {
+      const area = document.createElement('textarea');
+      area.value = text; document.body.appendChild(area); area.select();
+      document.execCommand('copy'); area.remove();
+    }
+    const label = button.textContent; button.textContent = 'Copied'; setTimeout(() => { button.textContent = label; }, 1200);
+  });
+  document.addEventListener('click', (event) => {
+    const anchor = event.target.closest && event.target.closest('a[href^="#"]');
+    if (anchor && anchor.hash === location.hash) setTimeout(reveal, 0);
+  });
+  reveal();
+})();</script></body></html>
