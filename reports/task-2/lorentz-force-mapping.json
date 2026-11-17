@@ -1,0 +1,288 @@
+{
+  "mapping_revision": "restart-opus-002",
+  "namespace_note": "Standalone Lorentz mapping namespace. eq-001 in this report denotes the Lorentz body force f_L = J x B. This is a distinct namespace from any earlier conductivity-model eq-001; the two expressions are not equated.",
+  "approval": {
+    "status": "unapproved",
+    "scope_of_user_authorization_this_pass": "Writing of exactly reports/task-2/lorentz-force-mapping.md and reports/task-2/lorentz-force-mapping.json. No physics approval, no interface approval, no runtime claim.",
+    "requires_user_approval_before": [
+      "generating any user-subroutine or plugin skeleton",
+      "committing to a sign / volume factor / time-form convention for residual accumulation at the user_calcrate_post or us3dh_calcrate_post seam",
+      "touching the mixture total energy residual slot (ns+4)",
+      "selecting any current-density source for J(x,t)",
+      "selecting any magnetic-field source for B(x,t)",
+      "selecting any conductivity, Ohm's-law, or collision-frequency closure"
+    ]
+  },
+  "target_docs": {
+    "user_manual_version": "1.2.1",
+    "developer_manual_version": "1.2.1",
+    "local_access_note": "Both manuals are present under .pi/ref-library/ (Git-ignored). Not copied by this report. Page citations use physical, one-based PDF pages.",
+    "installed_build_compatibility": "unconfirmed"
+  },
+  "equations": [
+    {
+      "id": "eq-001",
+      "symbolic": "f_L(x,t) = J(x,t) x B(x,t)",
+      "units": "N/m^3",
+      "variable_provenance_note": "Variables introduced for this provisional Lorentz-force mapping, not a user-approved current or field model.",
+      "variables": {
+        "J": {
+          "description": "current density vector",
+          "units": "A/m^2",
+          "provenance_status": "unresolved (U4); candidates include prescribed field, Ohm's-law closure, or EM subsolve; none approved"
+        },
+        "B": {
+          "description": "magnetic flux density vector",
+          "units": "T",
+          "provenance_status": "unresolved (U5); candidates include constant, prescribed time-varying, or coupled; none approved"
+        }
+      },
+      "role": "additive body-force per unit volume on the momentum equations",
+      "energy_consistency": "not addressed in this mapping; see U3 / sup-002",
+      "approved_by_user": false
+    },
+    {
+      "id": "eq-002",
+      "symbolic": "J = sigma * (E + u x B); resistive dissipation under this closure = |J|^2 / sigma",
+      "status": "candidate only, not approved; listed only to anchor U4 and U3 discussion",
+      "approved_by_user": false
+    }
+  ],
+  "mappings": [
+    {
+      "id": "map-001",
+      "equation_id": "eq-001",
+      "operation": "Accumulate the Lorentz body force f_L into the momentum residual slots at the documented post-calcrate seam.",
+      "primary_hook_user_sub": {
+        "name": "user_calcrate_post",
+        "signature_as_printed": "subroutine user_calcrate_post(iform); integer, intent(IN) :: iform; end subroutine user_calcrate_post",
+        "module_procedure_pointer": "us3d_user_module/user_calcrate_post",
+        "procedure_interface": "us3d_user_calcrate_post",
+        "called_from": "us3d/calcrate",
+        "invocation_timing_manual_wording": "Subroutine that is executed after calcrate. Here all gradients have been computed, and exchanges made. This would be a good place to add source terms.",
+        "argument_iform_manual_wording": "Whether to store the RHS. This is the variable iform that is passed into calcrate.",
+        "iform_numeric_values": "not enumerated in this section",
+        "citation": {
+          "manual_filename": "US3D-Developer-Manual.pdf",
+          "manual_version": "1.2.1",
+          "section": "6.4.10",
+          "physical_pdf_page": 41,
+          "printed_page": 31
+        },
+        "status": "supported integration-point identification; numerical convention UNRESOLVED (U1)"
+      },
+      "primary_hook_handler": {
+        "name": "us3dh_calcrate_post",
+        "string_id": "us3dh_calcrate_post",
+        "full_type_bound_signature": "unresolved in this report; the handler name and property table do not by themselves supply that signature",
+        "instance": "us3d_handler_class/us3dh_calcrate_post_ci",
+        "class": "us3d_handler_class/us3d_handler",
+        "prioritized": true,
+        "called_from": "us3d/calcrate before user_calcrate_post",
+        "iloc_label_as_printed": "US3D_ILOC_VISFLUX_POST",
+        "iloc_caveat": "Printed label differs from surrounding US3D_ILOC_CALCRATE_POSTGRAD / US3D_ILOC_CALCRATE_PREGRAD labels; chapter-wide ILOC parameter list on physical PDF p. 94 / printed p. 84 contains no US3D_ILOC_CALCRATE_POST. Treat as manual wording, not a verified runtime constant.",
+        "arguments": [
+          {
+            "name": "iform",
+            "direction": "IN",
+            "manual_wording": "Whether to store the RHS. This is the variable iform that is passed into calcrate."
+          }
+        ],
+        "citation": {
+          "manual_filename": "US3D-Developer-Manual.pdf",
+          "manual_version": "1.2.1",
+          "section": "8.2.6",
+          "physical_pdf_page": 99,
+          "printed_page": 89,
+          "continuation_page": {"physical_pdf_page": 100, "printed_page": 90, "note": "argument table"}
+        },
+        "status": "supported integration-point identification; numerical convention UNRESOLVED (U1)"
+      },
+      "equation_indices": {
+        "momentum_slots": "ns+1 : ns+3",
+        "species_slots": "1 : ns",
+        "mixture_total_energy_slot": "ns+4",
+        "internal_energy_slots": "ns+4+1 : ns+4+ntint",
+        "turbulence_slots": "ns+4+ntint+1 : ns+4+ntint+nteq",
+        "citation": {
+          "manual_filename": "US3D-Developer-Manual.pdf",
+          "manual_version": "1.2.1",
+          "section": "4.4 (Table 4.7 Equation order)",
+          "physical_pdf_page": 24,
+          "printed_page": 14
+        },
+        "status": "supported"
+      },
+      "residual_array_claim": {
+        "candidate_name": "duex",
+        "candidate_access_pattern": "duex(:,i) in-cell accumulation; i is the cell index",
+        "candidate_shape": "duex(nq, net) implied by printed usage duex(:,i) and duex(ns+4+nv+n,i); not stated explicitly in inspected pages",
+        "candidate_module": "simvars (implied via Appendix C.3.6 statement that duexo is stored in simvars/duexo; not stated explicitly for duex itself in inspected pages)",
+        "evidence_citations": [
+          {
+            "purpose": "chemistry/reaction accumulation pattern (analogy only, not proof for post-calcrate)",
+            "manual_filename": "US3D-Developer-Manual.pdf",
+            "manual_version": "1.2.1",
+            "section": "6.4.14",
+            "physical_pdf_page": 43,
+            "printed_page": 33,
+            "manual_wording": "duex(:,i) = duex(:,i) - rform*vi*ws ; at(:,:,i) = at(:,:,i) - vi*aa"
+          },
+          {
+            "purpose": "chemistry-handler mirror of same accumulation pattern",
+            "manual_filename": "US3D-Developer-Manual.pdf",
+            "manual_version": "1.2.1",
+            "section": "8.2.14 (us3dh_chem_reaction)",
+            "physical_pdf_page": 104,
+            "printed_page": 94,
+            "manual_wording": "duex(:,i) = duex(:,i) - rform*vi*ws ; at(:,:,i) = at(:,:,i) - vi*aa"
+          },
+          {
+            "purpose": "duex indexing by equation slot in turbulence update (ns+4+nv+n for turbulence slot)",
+            "manual_filename": "US3D-Developer-Manual.pdf",
+            "manual_version": "1.2.1",
+            "section": "9.1.2 US3D_ILOC_UPDATE_MID",
+            "physical_pdf_page": 141,
+            "printed_page": 131,
+            "manual_wording": "mut(n,i) = alpha*rmut_n(n,i) + beta*rmut(n,i) + duex(ns+4+nv+n,i)"
+          },
+          {
+            "purpose": "implies duex family lives in simvars (via duexo)",
+            "manual_filename": "US3D-Developer-Manual.pdf",
+            "manual_version": "1.2.1",
+            "section": "C.3.6 simvars/duexo",
+            "physical_pdf_page": 182,
+            "printed_page": 172,
+            "manual_wording": "the old duex is stored in simvars/duexo"
+          }
+        ],
+        "verified_this_pass": {
+          "duex_appears_as_per_equation_in_cell_accumulator": true,
+          "exact_sign_or_rform_or_vi_convention_at_user_calcrate_post": false,
+          "duex_declared_shape_or_allocation_site": false,
+          "duex_module_membership_stated_explicitly_for_duex_itself": false
+        },
+        "unresolved_items_tied_here": ["U1"],
+        "status": "candidate; integration-point identification is supported, but residual module/shape/access are UNVERIFIED in the inspected pages and must not be presented as proven"
+      },
+      "cell_data_available_at_entry": {
+        "manual_wording": "Here all gradients have been computed, and exchanges made.",
+        "bigu_access_citation": {
+          "manual_filename": "US3D-Developer-Manual.pdf",
+          "manual_version": "1.2.1",
+          "section": "4.1 Cell-Based Variables - BigU",
+          "physical_pdf_page": 19,
+          "printed_page": 9,
+          "correction_note": "Prior Opus draft cited physical PDF p. 29 / printed p. 19 for section 4.1; corrected to physical PDF p. 19 / printed p. 9. Section 4.1 begins on physical page 19."
+        },
+        "readable_quantities": "rho, u, v, w, T, Tv, species mass fractions / internal energies allocated by the active model (via bigu pointers)",
+        "em_quantities_available": "Availability of J, B, and E is not established by the inspected manual sections; this is not proof that such fields are absent from US3D."
+      },
+      "read_write_behavior": {
+        "reads": [
+          "bigu-resident primitive and conserved variables (rho, u, v, w, T, ...) via simvars (supported)",
+          "externally supplied J(x,t) and B(x,t) (provenance unresolved U4, U5)"
+        ],
+        "writes": [
+          "candidate: duex(ns+1:ns+3, i) accumulation of f_L contribution; exact sign/volume/time-form convention UNRESOLVED (U1)"
+        ],
+        "jacobian_touch": "optional at(:,:,i) coupling if J depends on bigu via a closure; UNRESOLVED (U2)"
+      },
+      "additive_or_replacement": "intended additive to existing momentum residual; does not replace any built-in term",
+      "status": "unresolved-provisional-seam",
+      "supported_elements": ["F1", "F2", "F3", "F4"],
+      "unresolved_blockers": ["U1", "U2", "U3", "U4", "U5", "U6", "U7"],
+      "approved_by_user": false
+    }
+  ],
+  "supporting_operations": [
+    {
+      "id": "sup-001",
+      "purpose": "Persistent storage and initialization of B(x,t), J(x,t), and optionally precomputed f_L across time steps and restart.",
+      "contract_status": "Only the BigU registration overview is cited here. Full signatures, invocation timing, data availability, and read/write contracts for the candidate supporting operations remain unresolved.",
+      "candidate_mechanisms": [
+        "User-slot registration in BigU",
+        "Private module arrays allocated inside user_init / user_initialize",
+        "Restart-file persistence via user_dataio_pre / user_dataio_post"
+      ],
+      "manual_citation": {
+        "manual_filename": "US3D-Developer-Manual.pdf",
+        "manual_version": "1.2.1",
+        "section": "4.3 Adding BigU Variables",
+        "physical_pdf_page": 24,
+        "printed_page": 14,
+        "manual_wording": "Additional user-specified variables can be added to BigU by requesting space (slots) in the BigU array. See ??.",
+        "note": "Printed cross-reference is unresolved in this section. Chapter 11 is referenced elsewhere for user variables and was NOT inspected this pass."
+      },
+      "status": "unresolved (U6)",
+      "approved_by_user": false
+    },
+    {
+      "id": "sup-002",
+      "purpose": "Energy-equation consistency term accompanying the Lorentz body force.",
+      "physics_notes": [
+        "u . f_L = u . (J x B) is mechanical work by the Lorentz force per unit volume.",
+        "Under candidate scalar resistive Ohm's law eq-002 only, resistive dissipation per unit volume is |J|^2 / sigma; this is not the same as J . E in general.",
+        "Labeling J . E as 'Joule heating' is imprecise: J . E is the total electromagnetic power delivered to the fluid; its dissipative part under eq-002 is |J|^2 / sigma, and its mechanical-work part is u . (J x B).",
+        "Deferral of research by the user is not approval to leave the energy equation unchanged during a coupled run."
+      ],
+      "candidate_mechanism": "Analogous accumulation into duex(ns+4, i) at the same F1/F2 seam, subject to U1 and to an approved physics closure.",
+      "status": "unresolved (U3)",
+      "approved_by_user": false
+    },
+    {
+      "id": "sup-003",
+      "purpose": "Conductivity sigma or electron collision-frequency nu_e model.",
+      "status": "deferred by user; .pi/ref-library/gupta.db present but not consulted this pass (U7)",
+      "approved_by_user": false
+    }
+  ],
+  "unresolved": [
+    {"id": "U1", "topic": "Exact sign, volume factor (vi), and time-form (rform) convention for accumulating a body-force source into duex at user_calcrate_post / us3dh_calcrate_post. Not written out in sections 6.4.10 or 8.2.6. Chemistry analogy at 6.4.14 / 8.2.14 is not proof. Resolution requires installed-source inspection."},
+    {"id": "U2", "topic": "Jacobian obligation at the F1/F2 seam if J depends on bigu through a closure. Blocked by U1 and U4."},
+    {"id": "U3", "topic": "Energy-equation consistency (sup-002); no physics closure approved."},
+    {"id": "U4", "topic": "Source and model for J(x,t); no choice approved."},
+    {"id": "U5", "topic": "Source and model for B(x,t); no choice approved."},
+    {"id": "U6", "topic": "Persistent storage for J, B, optional f_L (sup-001); cross-reference unresolved in section 4.3; Chapter 11 not inspected."},
+    {"id": "U7", "topic": "Conductivity / collision-frequency model (sup-003); deferred."}
+  ],
+  "caveats": [
+    {
+      "id": "C1",
+      "note": "Developer Manual physical PDF p. 41 (printed p. 31), section 6.4.11, prints 'Module/Procedure Pointer: us3d_user_module/user_calcrate_post' for user_calcrate_pregrad. Section heading and 'Procedure Interface' lines say user_calcrate_pregrad; treat as a manual typo. Does not affect F1/F2."
+    },
+    {
+      "id": "C2",
+      "note": "us3dh_calcrate_post dispatch label is printed as 'US3D_ILOC_VISFLUX_POST' (section 8.2.6, physical PDF p. 99 / printed p. 89). Surrounding handlers in sections 8.2.7 / 8.2.8 use US3D_ILOC_CALCRATE_POSTGRAD / US3D_ILOC_CALCRATE_PREGRAD. The chapter-wide ILOC parameter list on physical PDF p. 94 / printed p. 84 contains no US3D_ILOC_CALCRATE_POST. Treat the printed VISFLUX_POST label as manual wording, not a verified runtime constant."
+    },
+    {
+      "id": "C3",
+      "note": "us3dh_main_previsflux is renamed us3dh_calcrate_previsflux (section 8.2.33, physical PDF p. 111 / printed p. 101). Do not inherit the old name from legacy examples."
+    },
+    {
+      "id": "C4",
+      "note": "Installed US3D build version is unconfirmed. All interface claims above are documentation-level only."
+    },
+    {
+      "id": "C5",
+      "note": "No prior agent's page citations or BigU/duex claims were inherited. All citations in this revision verified from the local PDFs this pass."
+    },
+    {
+      "id": "C6",
+      "note": "Correction to prior Opus findings-only draft: section 4.1 of the Developer Manual begins on physical PDF p. 19 / printed p. 9, not physical p. 29 / printed p. 19 as previously cited."
+    }
+  ],
+  "open_questions": [
+    "Delivery form: libus3d_user.so prototype (user_calcrate_post, F1) or plugin/handler (us3dh_calcrate_post, F2)?",
+    "J and B provenance this pass: both prescribed; B prescribed with J under eq-002 and symbolic sigma; or other? Nothing approved.",
+    "Energy equation: open U3 as a parallel work item now, or leave the mapping intentionally incomplete and defer the entire coupled run? Deferral of research is not approval of leaving the energy equation unchanged in a coupled run.",
+    "Storage (sup-001 / U6): inspect Developer Manual Chapter 11 for BigU user-slot registration before approving the seam, or defer until F1/F2 is approved?"
+  ],
+  "not_claimed": [
+    "CFD/runtime verification",
+    "installed-version compatibility of any interface above",
+    "correctness of residual sign / volume factor / time-form convention at F1 or F2",
+    "correctness of the printed ILOC label flagged in C2",
+    "approval of any physics closure"
+  ]
+}

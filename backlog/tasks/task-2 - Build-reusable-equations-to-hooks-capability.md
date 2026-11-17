@@ -5,7 +5,7 @@ status: In Progress
 assignee:
   - '@pi'
 created_date: '2026-11-03 22:08'
-updated_date: '2026-11-04 19:20'
+updated_date: '2026-11-05 18:44'
 labels: []
 dependencies:
   - TASK-1
@@ -39,6 +39,8 @@ Turn user-supplied equations into reviewable US3D integration mappings rather th
 3. Keep concise skill instructions for symbolic equations and variable definitions, targeted clarification, original-manual-backed mapping, and explicit user approval before downstream skeleton work. No mandatory input form or source-location requirement.
 4. Describe readable and structured mapping outputs within the skill without adding a schema, renderer, validator or automated approval machinery.
 5. Check that only SKILL.md remains and that it has no references to removed files. Keep TASK-2 open; broader acceptance verification is deferred.
+
+6. Run the user-authorized Opus report-writing trial: save the provisional Lorentz-source mapping to reports/task-2/lorentz-force-mapping.md and reports/task-2/lorentz-force-mapping.json; correct evidence and physics-labeling errors, verify original-manual citations, and check matching IDs/content and JSON validity. These are generated trial reports, not additions to the single-file skill implementation. Keep the mapping unapproved and TASK-2 In Progress; no plugin code or acceptance sign-off.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
@@ -53,4 +55,6 @@ User simplified the proposed input to symbolic equations and variable definition
 User approved the revised simple-input workflow: symbolic equations and variable definitions, targeted clarification, documented mapping, explicit mapping approval. Implementation authorized; packaging is a project skill with bundled Python standard-library report helpers and examples.
 
 Simplified at user request to a single self-contained SKILL.md. Removed the added scripts, tests, JSON fixtures, examples README, reference contract and Python caches. Removed automated digest/gate machinery. Only SKILL.md remains; checked that it has no references to removed supporting files. Broader task acceptance verification remains deferred; task stays In Progress.
+
+User-authorized Opus trial reports saved to reports/task-2/lorentz-force-mapping.md and reports/task-2/lorentz-force-mapping.json (revision restart-opus-002). Parent reviewed both, corrected unsupported EM-field absence wording and variable provenance, and explicitly marked missing handler/supporting-operation contracts unresolved. Local checks passed: JSON parsing, 19 unique entry IDs present in Markdown, revision/unapproved status, equation and blocker references, finding IDs, and git diff --check. This is a provisional Lorentz integration-point report, not complete acceptance verification: source scaling/access, field/current/conductivity models, storage and energy coupling remain unresolved. No plugin generation or runtime verification; mapping unapproved and TASK-2 remains In Progress.
 <!-- SECTION:NOTES:END -->
